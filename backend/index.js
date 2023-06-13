@@ -1,4 +1,5 @@
 const { Processo, escalonamentoFIFO } = require('./functions/fifo');
+const { escalonamentoSJF } = require('./functions/sjf');
 const readline = require('readline');
 
 // Cria uma interface de leitura para receber os valores do terminal
@@ -46,7 +47,8 @@ function executarEscalonamento(processos, algoritmo) {
       console.log("Tempo médio de espera: " + result.tempoExecucaoTotal + " / " + result.qtyProcessos + " = " + result.tempoMedioEspera);
       break;
     case 2:
-      console.log("Algoritmo escolhido: SJF");
+      const resultSJF = escalonamentoSJF(processos);
+      console.log("Tempo médio de espera (SJF): " + resultSJF.tempoExecucaoTotal + " / " + resultSJF.qtyProcessos + " = " + resultSJF.tempoMedioEspera);
       break;
     case 3:
       console.log("Algoritmo escolhido: Round Robin");
