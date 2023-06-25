@@ -5,8 +5,10 @@ import Processos from '../../components/Processos';
 
 const Home = () => {
   return (
-    <div>
-        <h1>Home</h1>
+    <div className={styles.containerHome}>
+        <div className={styles.titleWrapperHome}>
+            <h1>Insira a quantidade de processos e defina seus dados antes de selecionar o método de escalonamento.</h1>
+        </div>
         <Processos/>
     </div>
   )
