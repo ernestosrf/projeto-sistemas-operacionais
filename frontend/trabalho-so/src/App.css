@@ -1,6 +1,11 @@
-.App {
+/* .App {
   display: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+} */
+
+.container {
+  min-height: 60vh;
+  margin-bottom: 5em;
 }
