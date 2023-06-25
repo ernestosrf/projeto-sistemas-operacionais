@@ -12,6 +12,7 @@
     justify-content: center;
     text-align: center;
     background-color: saddlebrown;
+    margin-bottom: 1em;
 }
 
 .titleWrapperHome h1 {
@@ -30,4 +31,3 @@
         font-size: .7rem;
     }
 }
-

@@ -10,8 +10,7 @@ const Navbar = () => {
         </NavLink>
         <ul className={styles.links_list}>
             <li>
-                <NavLink to="/" 
-                className={({ isActive }) => (isActive ? styles.active : "")}>Home</NavLink>
+                <NavLink to="/" className={styles.active}>Home</NavLink>
             </li>
         </ul>
     </nav>

@@ -1,0 +1,7 @@
+.containerResult {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    padding: .5em 2em;
+    background-color: aquamarine;
+}
