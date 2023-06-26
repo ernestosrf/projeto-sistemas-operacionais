@@ -9,7 +9,7 @@
  */
 
 
-function RoundRobin(processos, quantum) {
+function escalonamentoRR(processos, quantum) {
 
 	turnaroundTotal = 0;
 			
@@ -57,8 +57,8 @@ function RoundRobin(processos, quantum) {
 	new processo (4, 12, 30)
 ]; */
 
-const turnaroundMedio = RoundRobin(processos, 2);
-console.log(`Turnaround médio: ${turnaroundMedio.toFixed(2)}ms`);
+/* const turnaroundMedio = escalonamentoRR(processos, 2);
+console.log(`Turnaround médio: ${turnaroundMedio.toFixed(2)}ms`); */
 
   module.exports = {
   RoundRobin
