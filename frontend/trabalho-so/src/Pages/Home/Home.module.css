@@ -19,6 +19,7 @@
     margin-top: 1em;
     margin-bottom: 1em;
     font-size: 1.5rem;
+    font-family: "Montserrat", sans-serif;
 }
 
 /* Responsiveness */
@@ -29,5 +30,6 @@
         margin-top: 1em;
         margin-bottom: 1em;
         font-size: .7rem;
+        font-family: "Montserrat", sans-serif;
     }
 }

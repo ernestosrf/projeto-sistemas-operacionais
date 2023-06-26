@@ -126,7 +126,7 @@ const createInputProcessos = (e) => {
 
   return (
     <div>
-      <section className={styles.processWrapper}>
+      <section className={styles.processQtyAndQuantumWrapper}>
           <form onSubmit={createInputProcessos} className={styles.formProcessWrapper}>
             <div className={styles.processQtyWrapper}>
               <div className={styles.processLabelWrapper}>
@@ -166,9 +166,9 @@ const createInputProcessos = (e) => {
             </div>
           </form>
       </section>
-      <div>
-        {showProcessos}
-        <form onSubmit={callFIFO}>
+      <section className={styles.processWrapper}>
+        {/* {showProcessos} */}
+        {/* <form onSubmit={callFIFO}>
             <button type='submit'>FIFO</button>
         </form>
         <form onSubmit={callSJF}>
@@ -179,8 +179,22 @@ const createInputProcessos = (e) => {
         </form>
         <form onSubmit={callEDF}>
             <button type='submit'>EDF</button>
+        </form> */}
+      </section>
+      <section className={styles.inputsProcessWrapper}>
+        <form onSubmit={callFIFO} className={styles.formForInputs}>
+          <button type='submit' className={styles.inputProcess}>FIFO</button>
         </form>
-      </div>
+        <form onSubmit={callSJF} className={styles.formForInputs}>
+          <button type='submit' className={styles.inputProcess}>SJF</button>
+        </form>
+        <form onSubmit={callRR} className={styles.formForInputs}>
+          <button type='submit' className={styles.inputProcess}>Round Roubin</button>
+        </form>
+        <form onSubmit={callEDF} className={styles.formForInputs}>
+          <button type='submit' className={styles.inputProcess}>EDF</button>
+        </form>
+      </section>
     </div>
   )
 }
