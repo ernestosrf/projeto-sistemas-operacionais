@@ -4,6 +4,7 @@ class Processo {
       this.tempoChegada = tempoChegada;
       this.tempoExecucao = tempoExecucao;
       this.deadline = deadline;
+      this.turnaround = 0;
     }
   }
   
