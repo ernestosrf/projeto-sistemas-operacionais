@@ -61,5 +61,5 @@ function escalonamentoRR(processos, quantum) {
 console.log(`Turnaround médio: ${turnaroundMedio.toFixed(2)}ms`); */
 
   module.exports = {
-  	escalonamentoRR;
+  	escalonamentoRR
 }; 

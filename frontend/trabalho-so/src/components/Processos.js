@@ -79,7 +79,7 @@ const callRR = (e) => {
 
 const callEDF = (e) => {
   e.preventDefault();
-  // console.log(escalonamentoEDF(processos, 2, 1));
+  console.log(escalonamentoEDF(processos, 2, 1));
   setProcessos([]);
 }
 
