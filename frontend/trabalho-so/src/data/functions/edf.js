@@ -5,6 +5,9 @@ function escalonamentoEDF(
 ) {
   // Sort processes by their time of arrival
   processes.sort((a, b) => a.tempoChegada - b.tempoChegada);
+  processes.forEach((p) => {
+		p.feadtime = 0;
+	});
 
   let currentTime = 0;
   let totalTurnaroundTime = 0;
@@ -19,6 +22,7 @@ function escalonamentoEDF(
           : curr;
       return result;
     }, infinity);
+   
     if (process === infinity) {
       currentTime++;
       continue
@@ -27,10 +31,17 @@ function escalonamentoEDF(
     // Execute the process for either the system quantum or the remaining tempoExecucao, whichever is smaller
     const executionTime = Math.min(
       systemQuantum,
-      process.tempoExecucao - process.turnaround
+      process.tempoExecucao - process.feadtime
     );
+    process.feadtime += executionTime;
+    for (const obj of processes) {
+      if (!obj.completed && obj.tempoChegada <= currentTime) {
+        obj.turnaround += executionTime;
+      }else if(!obj.completed && obj.tempoChegada <= currentTime + executionTime){
+        obj.turnaround += currentTime + executionTime - obj.tempoChegada; 
+      }
+    }
     currentTime += executionTime;
-    process.turnaround += executionTime;
 
     // Check if the process missed its deadline
     if (process.turnaround > process.deadline) {
@@ -38,11 +49,18 @@ function escalonamentoEDF(
     }
 
     // Check if the process has completed
-    if (process.turnaround === process.tempoExecucao) {
+    if (process.feadtime === process.tempoExecucao) {
       process.turnaroundTime = currentTime - process.tempoChegada;
       process.completed = true;
       completedProcesses++;
     } else {
+      for (const obj of processes) {
+        if (!obj.completed && obj.tempoChegada <= currentTime) {
+          obj.turnaround += systemOverload;
+        }else if(!obj.completed && obj.tempoChegada <= currentTime + systemOverload){
+          obj.turnaround += currentTime + systemOverload - obj.tempoChegada; 
+        }
+      }
       currentTime += systemOverload;
     }
   }
@@ -53,52 +71,9 @@ function escalonamentoEDF(
       totalTurnaroundTime += process.turnaroundTime;
     }
   }
-  const averageTurnaroundTime = totalTurnaroundTime / processes.length;
-  return averageTurnaroundTime;
+  const qtyProcessos = processes.length;
+  const averageTurnaroundTime = totalTurnaroundTime / qtyProcessos;
+  return {currentTime, qtyProcessos, averageTurnaroundTime};
 }
-const processes = [
-  {
-    id: 1,
-    tempoChegada: 0,
-    tempoExecucao: 4,
-    deadline: 7,
-    completed: false,
-    turnaround: 0,
-  },
-  {
-    id: 2,
-    tempoChegada: 2,
-    tempoExecucao: 2,
-    deadline: 5,
-    completed: false,
-    turnaround: 0,
-  },
-  {
-    id: 3,
-    tempoChegada: 4,
-    tempoExecucao: 1,
-    deadline: 8,
-    completed: false,
-    turnaround: 0,
-  },
-  {
-    id: 4,
-    tempoChegada: 6,
-    tempoExecucao: 3,
-    deadline: 10,
-    completed: false,
-    turnaround: 0,
-  },
-];
-
-const systemQuantum = 2;
-const systemOverload = 1;
-
-const averageTurnaroundTime = escalonamentoEDF(
-  processes,
-  systemQuantum,
-  systemOverload
-);
-console.log('Average Turnaround Time:', averageTurnaroundTime);
 
 module.exports = {escalonamentoEDF};
