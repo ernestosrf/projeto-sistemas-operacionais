@@ -39,41 +39,62 @@ const ProcessoInput = ({ onProcessCreated }) => {
   }
   
     return (
-      <div>
-        <input
-          type='number'
-          name='tempoChegada'
-          required
-          value={tempoChegada}
-          onChange={(e) => setTempoChegada(e.target.value)}
-          placeholder='Tempo Chegada'
-        />
-        <input
-          type='number'
-          name='tempoExecucao'
-          required
-          value={tempoExecucao}
-          onChange={(e) => setTempoExecucao(e.target.value)}
-          placeholder='Tempo Execução'
-        />
-        <input
-          type='number'
-          name='deadline'
-          required
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-          placeholder='Deadline'
-        />
-         <input
-          type='number'
-          name='nPaginas'
-          required
-          value={nPaginas}
-          onChange={(e) => setNPaginas(e.target.value)}
-          placeholder='Número de Páginas'
-        />
-        <button onClick={handleCreateProcesso}>Create Process</button>
-      </div>
+      <section className={styles.processDataWrapper}>
+        <div className={styles.titleProcessData}>
+          <label htmlFor="">Processo Nº "X":</label>
+        </div>
+        <div className={styles.valuesProcessData}>
+          <div className={styles.divTcData}>
+            <label htmlFor="" className={styles.labelTcData}>Tempo de Chegada</label>
+            <input
+              type='text'
+              name='tempoChegada'
+              required
+              value={tempoChegada}
+              onChange={(e) => setTempoChegada(e.target.value)}
+              // placeholder='Tempo Chegada'
+              className={styles.inputTcData}
+            />
+          </div>
+          <div className={styles.divTcData}>
+            <label htmlFor="" className={styles.labelTcData}>Tempo de Execução</label>
+            <input
+              type='text'
+              name='tempoExecucao'
+              required
+              value={tempoExecucao}
+              onChange={(e) => setTempoExecucao(e.target.value)}
+              // placeholder='Tempo Execução'
+              className={styles.inputTcData}
+            />
+          </div>
+          <div className={styles.divTcData}>
+            <label htmlFor="" className={styles.labelTcData}>Deadline</label>
+            <input
+              type='text'
+              name='deadline'
+              required
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              // placeholder='Deadline'
+              className={styles.inputTcData}
+            />
+          </div>
+          <div className={styles.divTcData}>
+            <label htmlFor="" className={styles.labelTcData}>Nº de Páginas</label>
+            <input
+              type='text'
+              name='nPaginas'
+              required
+              value={nPaginas}
+              onChange={(e) => setNPaginas(e.target.value)}
+              // placeholder='Número de Páginas'
+              className={styles.inputTcData}
+            />
+          </div>
+        </div>
+        <button onClick={handleCreateProcesso} className={styles.inputHiddenTcData}>Create Process</button>
+      </section>
     );
   };
 
@@ -167,19 +188,7 @@ const createInputProcessos = (e) => {
           </form>
       </section>
       <section className={styles.processWrapper}>
-        {/* {showProcessos} */}
-        {/* <form onSubmit={callFIFO}>
-            <button type='submit'>FIFO</button>
-        </form>
-        <form onSubmit={callSJF}>
-            <button type='submit'>SJF</button>
-        </form>
-        <form onSubmit={callRR}>
-            <button type='submit'>Round Robin</button>
-        </form>
-        <form onSubmit={callEDF}>
-            <button type='submit'>EDF</button>
-        </form> */}
+        {showProcessos}
       </section>
       <section className={styles.inputsProcessWrapper}>
         <form onSubmit={callFIFO} className={styles.formForInputs}>

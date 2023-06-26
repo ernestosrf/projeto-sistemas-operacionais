@@ -89,6 +89,7 @@
     background-color: black;
     color: aliceblue;
     border: 1px solid aliceblue;
+    transition: .6s;
 }
 
 .processQuantumWrapper {
@@ -124,11 +125,19 @@
 /* Show Process */
 
 .processWrapper {
-    width: 100%;
-    min-height: 500px;
+    width: calc(100% - 2em);
+    height: calc(420px + 2em); 
     background-color: rgb(199, 199, 199);
     margin-bottom: 1em;
     border-radius: 8px;
+    padding: 1em;
+    display: flex;
+    /* flex-direction: row; */
+    flex-wrap: wrap;
+    gap: 1em;
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
+    /* gap: 1em; */
 }
 
 /* Input Process */
@@ -171,4 +180,79 @@
     color: aliceblue;
     border: 1px solid aliceblue;
     transition: .6s;
+}
+
+/* Process Data */
+
+.processDataWrapper {
+    width: 345px;
+    height: 140px;
+    background-color: salmon;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.titleProcessData {
+    width: calc(100% - 1em);
+    height: calc(30px - 1em);
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    text-align: center;
+    padding: .5em;
+    font-weight: 600;
+    font-size: .9rem;
+    font-family: "Montserrat", sans-serif;
+    background-color: antiquewhite;
+}
+
+.valuesProcessData {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: blue;
+    gap: .5em;
+}
+
+.divTcData {
+    width: 80px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: blueviolet;
+    gap: .5em;
+}
+
+.labelTcData {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: .9rem;
+    font-family: "Montserrat", sans-serif;
+    /* margin-bottom: .5em; */
+}
+
+.inputTcData {
+    /* width: 100%; */
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: .9rem;
+    border: none;
+    outline: none;
+    font-family: "Montserrat", sans-serif;
+}
+
+.inputHiddenTcData {
+    display: none;
 }
