@@ -1,4 +1,4 @@
-function calculateAverageTurnaroundTime(
+function escalonamentoEDF(
   processes,
   systemQuantum,
   systemOverload
@@ -95,9 +95,11 @@ const processes = [
 const systemQuantum = 2;
 const systemOverload = 1;
 
-const averageTurnaroundTime = calculateAverageTurnaroundTime(
+const averageTurnaroundTime = escalonamentoEDF(
   processes,
   systemQuantum,
   systemOverload
 );
 console.log('Average Turnaround Time:', averageTurnaroundTime);
+
+module.exports = {escalonamentoEDF};

@@ -58,7 +58,7 @@ class Processo {
       encerrados.forEach((p) => {
         this.turnaroundTotal += p.turnaround;
       }); //soma os turnarounds de todos os processos 
-  
+      console.log(`Turnaround total: ${this.turnaroundTotal} quantidade de processos: ${encerrados.length}`);
       const turnaroundMedio = this.turnaroundTotal / encerrados.length;
       console.log(`Turnaround médio: ${turnaroundMedio.toFixed(2)}ms`);
     } //Pega o turnaround médio a partir da soma de turnarounds e do número de processos
@@ -69,10 +69,86 @@ class Processo {
     }
   }
   
-  const rr = new RoundRobin(3);
-  rr.inserir(0, 2, 0, 1);
-  rr.alterarQuantum(8);
-  rr.inserir(1, 4, 2, 1);
-  rr.inserir(2, 8, 4, 1);
-  rr.executar();
-  
+  // const rr = new RoundRobin(3);
+  // rr.inserir(0, 8, 0, 1);
+  // rr.alterarQuantum(2);
+  // rr.inserir(1, 6, 2, 1);
+  // rr.inserir(2, 12, 4, 1);
+  // rr.executar();
+
+// Implementação do algoritmo Round Robin (RR)
+// function escalonamentoRR(processos, quantum) {
+//   processos.sort((a, b) => a.tempoChegada - b.tempoChegada);
+
+//   let tempoAtual = 0;
+//   let tempoEsperaTotal = 0;
+//   let tempoExecucao = 0;
+
+//   const filaProcessos = [...processos];
+
+//   while (filaProcessos.length > 0) {
+//     const processo = filaProcessos.shift();
+
+//     if (processo.tempoChegada > tempoAtual) {
+//       tempoAtual = processo.tempoChegada;
+//     }
+
+//     const tempoEspera = tempoAtual - processo.tempoChegada;
+//     tempoEsperaTotal += tempoEspera;
+
+//     if (processo.tempoExecucao <= quantum) {
+//       tempoAtual += processo.tempoExecucao;
+//       tempoExecucao += processo.tempoExecucao;
+//     } else {
+//       tempoAtual += quantum;
+//       tempoExecucao += quantum;
+
+//       processo.tempoExecucao -= quantum;
+
+//       filaProcessos.push(processo);
+//     }
+//   }
+
+//   const tempoExecucaoTotal = tempoExecucao;
+//   const qtyProcessos = processos.length;
+//   const tempoMedioEspera = tempoEsperaTotal / qtyProcessos;
+
+//   return { tempoExecucaoTotal, qtyProcessos, tempoMedioEspera };
+// }
+
+function escalonamentoRR (processos, quantum) {
+  let tempoTotal = 0;
+  let tempoEspera = new Array(processos.length).fill(0);
+  let tempoExecutado = new Array(processos.length).fill(0);
+
+  // Execução do escalonamento Round Robin
+  while (true) {
+    let concluido = true;
+
+    for (let i = 0; i < processos.length; i++) {
+      const processo = processos[i];
+
+      if (tempoExecutado[i] < processo.tempoExecucao) {
+        concluido = false;
+
+        if (processo.tempoExecucao - tempoExecutado[i] > quantum) {
+          tempoTotal += quantum;
+          tempoExecutado[i] += quantum;
+        } else {
+          tempoTotal += processo.tempoExecucao - tempoExecutado[i];
+          tempoExecutado[i] = processo.tempoExecucao;
+        }
+      }
+    }
+
+    if (concluido) {
+      break;
+    }
+  }
+
+  return tempoTotal;
+}
+
+module.exports = {
+  escalonamentoRR
+};

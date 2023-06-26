@@ -1,6 +1,6 @@
 function escalonamentoSJF(processos) {
   // Ordena os processos com base no tempo de execução (mais curto primeiro)
-  processos.sort((a, b) => a.tempoExecucao - b.tempoExecucao);
+  processos.sort((a, b) => a.tempoExecucao < b.tempoExecucao);
 
   let tempoAtual = 0;
   let tempoEsperaTotal = 0;
@@ -21,7 +21,7 @@ function escalonamentoSJF(processos) {
 
   const tempoExecucaoTotal = tempoEsperaTotal + tempoExecucao;
   const qtyProcessos = processos.length;
-  const tempoMedioEspera = tempoExecucaoTotal / qtyProcessos;
+  const tempoMedioEspera = (tempoExecucaoTotal) / qtyProcessos;
 
   return { tempoExecucaoTotal, qtyProcessos, tempoMedioEspera };
 }
