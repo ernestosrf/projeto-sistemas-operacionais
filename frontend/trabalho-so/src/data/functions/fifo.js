@@ -1,10 +1,11 @@
 // Define a classe Processo
 class Processo {
-    constructor(tempoChegada, tempoExecucao, deadline) {
+    constructor(tempoChegada, tempoExecucao, deadline, nPaginas) {
       this.tempoChegada = tempoChegada;
       this.tempoExecucao = tempoExecucao;
       this.deadline = deadline;
       this.turnaround = 0;
+      this.nPaginas = nPaginas;
       this.completed = false;
     }
   }
