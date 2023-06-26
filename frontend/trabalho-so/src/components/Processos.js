@@ -73,7 +73,7 @@ const callSJF = (e) => {
 
 const callRR = (e) => {
   e.preventDefault();
-  console.log(RoundRobin(processos, 2));
+  console.log(escalonamentoRR(processos, 2));
   setProcessos([]);
 }
 
