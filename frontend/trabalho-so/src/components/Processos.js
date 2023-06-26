@@ -8,21 +8,35 @@ import { escalonamentoRR } from '../data/functions/rr';
 import { escalonamentoEDF } from '../data/functions/edf';
 
 
-const ProcessoInput = ( {onProcessCreated}) => {
-    const [tempoChegada, setTempoChegada] = useState(0);
-    const [tempoExecucao, setTempoExecucao] = useState(0);
-    const [deadline, setDeadline] = useState(0);
-		const [nPaginas, setNPaginas] = useState(0);
+const ProcessoInput = ({ onProcessCreated }) => {
+  const [tempoChegada, setTempoChegada] = useState(0);
+  const [tempoExecucao, setTempoExecucao] = useState(0);
+  const [deadline, setDeadline] = useState(0);
+  const [nPaginas, setNPaginas] = useState(0);
+  const [contador, setContador] = useState(0); //contador para criar páginas de cada processo 
+  const [contadorAnt, setContadorAnt] = useState(0); //armazena contador anterior e cria da página seguinte até a última que do processo corrente
 
-    const handleCreateProcesso = () => {
-        const process = new fifo.Processo(
-          Number(tempoChegada),
-          Number(tempoExecucao),
-          Number(deadline),
-          Number(nPaginas)
-        );
-        onProcessCreated(process);
-      };
+  const handleCreateProcesso = () => {
+    const process = new fifo.Processo(
+      Number(tempoChegada),
+      Number(tempoExecucao),
+      Number(deadline),
+      Number(nPaginas),
+      geradorPaginas(contador)
+    );
+    onProcessCreated(process);
+
+    setContadorAnt(contador);
+    setContador(contador + Number(nPaginas)); // Atualiza o contador com base em nPaginas
+  };
+
+  const geradorPaginas = (contador) => {
+    const pags = [];
+    for (let i = contadorAnt; i < contador; i++) {
+    	pags.push(i);
+    };
+	return pags;  
+  }
   
     return (
       <div>
