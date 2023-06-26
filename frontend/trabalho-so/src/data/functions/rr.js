@@ -11,7 +11,7 @@
 
 function escalonamentoRR(processos, quantum) {
 
-	turnaroundTotal = 0;
+	let turnaroundTotal = 0;
 			
 	processos.sort((a, b) => a.tempoChegada - b.tempoChegada);
 	
