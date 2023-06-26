@@ -12,12 +12,14 @@ const ProcessoInput = ( {onProcessCreated}) => {
     const [tempoChegada, setTempoChegada] = useState(0);
     const [tempoExecucao, setTempoExecucao] = useState(0);
     const [deadline, setDeadline] = useState(0);
+		const [nPaginas, setNPaginas] = useState(0);
 
     const handleCreateProcesso = () => {
         const process = new fifo.Processo(
           Number(tempoChegada),
           Number(tempoExecucao),
-          Number(deadline)
+          Number(deadline),
+          Number(nPaginas)
         );
         onProcessCreated(process);
       };
@@ -47,6 +49,14 @@ const ProcessoInput = ( {onProcessCreated}) => {
           value={deadline}
           onChange={(e) => setDeadline(e.target.value)}
           placeholder='Deadline'
+        />
+         <input
+          type='number'
+          name='nPaginas'
+          required
+          value={nPaginas}
+          onChange={(e) => setNPaginas(e.target.value)}
+          placeholder='Número de Páginas'
         />
         <button onClick={handleCreateProcesso}>Create Process</button>
       </div>
@@ -79,7 +89,7 @@ const callRR = (e) => {
 
 const callEDF = (e) => {
   e.preventDefault();
-  console.log(escalonamentoEDF(processos, 2, 1));
+  // console.log(escalonamentoEDF(processos, 2, 1));
   setProcessos([]);
 }
 
