@@ -249,5 +249,9 @@
 }
 
 .inputHiddenTcData {
-    display: none;
+    /* width: .1em;
+    height: .1em;
+    border: none;
+    background: transparent; */
+    /* display: none; */
 }

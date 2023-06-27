@@ -63,4 +63,3 @@ class Processo {
   module.exports = {
     Processo, escalonamentoFIFO
   }
-  

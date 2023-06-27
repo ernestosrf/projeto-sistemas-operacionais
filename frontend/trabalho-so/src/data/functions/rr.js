@@ -33,7 +33,7 @@ function escalonamentoRR(processos, quantum) {
 			p.turnaround = tempoAtual - p.tempoChegada;
 			encerrados.push(p);
 		} 
-					//Caso reste tempo de execução, executa pelo quantum definido e coloca no fim da fila
+		//Caso reste tempo de execução, executa pelo quantum definido e coloca no fim da fila
 		else {
 			console.log(`Processo executado por ${quantum}ms`);
 			p.tempoExecucao -= quantum;
@@ -62,6 +62,6 @@ function escalonamentoRR(processos, quantum) {
 /* const turnaroundMedio = escalonamentoRR(processos, 2);
 console.log(`Turnaround médio: ${turnaroundMedio.toFixed(2)}ms`); */
 
-  module.exports = {
+module.exports = {
   	escalonamentoRR
-}; 
+};
