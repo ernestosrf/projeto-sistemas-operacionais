@@ -29,7 +29,7 @@ function FIFO(processo, tamanhoRam) {
   
   FIFO(paginas, tamanhoRam); */
 
-module.exports {
+module.exports = {
     FIFO
 }
   
