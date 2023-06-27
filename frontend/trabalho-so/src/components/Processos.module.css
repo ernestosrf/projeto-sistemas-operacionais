@@ -1,6 +1,5 @@
 .processQtyAndQuantumWrapper {
     width: 100%;
-    /* min-width: 1296px; */
     height: 80px;
     margin-bottom: 1em;
 }
@@ -20,12 +19,11 @@
     gap: 1em;
     padding: .5em;
     border-radius: 8px;
-    background-color: rgb(199, 199, 199);
+    background-color: #edf3f6;
 }
 
 .processLabelWrapper {
     cursor: default;
-    /* width: 33%; */
     height: 100%;
     border-radius: 18px;
     display: flex;
@@ -47,7 +45,6 @@
     cursor: auto;
     width: 4em;
     height: calc(100% - .2em);
-    /* padding-top: .5rem; */
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -55,11 +52,10 @@
     justify-content: center;
     font-weight: 600;
     font-size: 1.2rem;
-    /* padding-inline: 1rem; */
-    /* color: #FDE000; */
     border: none;
     outline: none;
     font-family: "Montserrat", sans-serif;
+    background-color: #ffff;
 }
 
 .processButtonWrapper {
@@ -78,8 +74,6 @@
     font: .8rem;
     font-weight: 600;
     border-radius: 8px;
-    /* border: none; */
-    /* outline: none; */
     cursor: pointer;
     background-color: aliceblue;
     font-family: "Montserrat", sans-serif;
@@ -100,7 +94,7 @@
     justify-content: center;
     padding: .5em;
     border-radius: 8px;
-    background-color: rgb(199, 199, 199);
+    background-color: #edf3f6;
 }
 
 .processQuantumDiv {
@@ -109,7 +103,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* padding-inline: 1rem; */
     gap: 1em;
 }
 
@@ -119,25 +112,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* padding-inline: 1rem; */
 }
 
 /* Show Process */
 
 .processWrapper {
-    width: calc(100% - 2em);
-    height: calc(420px + 2em); 
-    background-color: rgb(199, 199, 199);
+    min-width: 100%;
+    min-height: 500px; 
+    background-color: #edf3f6;
     margin-bottom: 1em;
     border-radius: 8px;
-    padding: 1em;
     display: flex;
-    /* flex-direction: row; */
+    align-items: center;
+    justify-content: center;
+}
+
+.showProcessDiv {
+    width: calc(1392px + 1.5em);
+    max-height: calc(420px + 1.3rem);
+    display: flex;
     flex-wrap: wrap;
-    gap: 1em;
-    /* flex-direction: column; */
-    /* justify-content: space-between; */
-    /* gap: 1em; */
+    gap: 0.65rem;
+    padding-left: .65rem;
+    padding-top: .65rem;
+    padding-bottom: .65rem;
 }
 
 /* Input Process */
@@ -145,7 +143,7 @@
 .inputsProcessWrapper {
     width: calc(100% - 1em);
     height: calc(100px - 1em);
-    background-color: rgb(199, 199, 199);
+    background-color: #edf3f6;
     margin-bottom: 1em;
     padding: .5em;
     display: flex;
@@ -157,7 +155,6 @@
 .formForInputs {
     width: 150px;
     height: 100%;
-    background-color: aquamarine;
 }
 
 .inputProcess {
@@ -185,13 +182,13 @@
 /* Process Data */
 
 .processDataWrapper {
-    width: 345px;
+    width: 343px;
     height: 140px;
-    background-color: salmon;
     border-radius: 8px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    border: 1px solid black;
 }
 
 .titleProcessData {
@@ -204,15 +201,15 @@
     padding: .5em;
     font-weight: 600;
     font-size: .9rem;
+    border-bottom: 1px solid black;
+    background-color: rgb(247, 242, 236);
     font-family: "Montserrat", sans-serif;
-    background-color: antiquewhite;
 }
 
 .valuesProcessData {
     width: 100%;
     height: 100%;
     display: flex;
-    background-color: blue;
     gap: .5em;
 }
 
@@ -221,7 +218,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: blueviolet;
     gap: .5em;
 }
 
@@ -235,11 +231,9 @@
     font-weight: 600;
     font-size: .9rem;
     font-family: "Montserrat", sans-serif;
-    /* margin-bottom: .5em; */
 }
 
 .inputTcData {
-    /* width: 100%; */
     height: 50%;
     display: flex;
     align-items: center;
@@ -251,6 +245,7 @@
     border: none;
     outline: none;
     font-family: "Montserrat", sans-serif;
+    background-color: #ffff;
 }
 
 .inputHiddenTcData {

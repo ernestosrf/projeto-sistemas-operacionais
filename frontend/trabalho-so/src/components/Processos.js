@@ -47,48 +47,48 @@ const ProcessoInput = ({ onProcessCreated }) => {
           <div className={styles.divTcData}>
             <label htmlFor="" className={styles.labelTcData}>Tempo de Chegada</label>
             <input
-              type='text'
+              type='number'
               name='tempoChegada'
               required
               value={tempoChegada}
               onChange={(e) => setTempoChegada(e.target.value)}
-              // placeholder='Tempo Chegada'
+              autoComplete='off'
               className={styles.inputTcData}
             />
           </div>
           <div className={styles.divTcData}>
             <label htmlFor="" className={styles.labelTcData}>Tempo de Execução</label>
             <input
-              type='text'
+              type='number'
               name='tempoExecucao'
               required
               value={tempoExecucao}
               onChange={(e) => setTempoExecucao(e.target.value)}
-              // placeholder='Tempo Execução'
+              autoComplete='off'
               className={styles.inputTcData}
             />
           </div>
           <div className={styles.divTcData}>
             <label htmlFor="" className={styles.labelTcData}>Deadline</label>
             <input
-              type='text'
+              type='number'
               name='deadline'
               required
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
-              // placeholder='Deadline'
+              autoComplete='off'
               className={styles.inputTcData}
             />
           </div>
           <div className={styles.divTcData}>
             <label htmlFor="" className={styles.labelTcData}>Nº de Páginas</label>
             <input
-              type='text'
+              type='number'
               name='nPaginas'
               required
               value={nPaginas}
               onChange={(e) => setNPaginas(e.target.value)}
-              // placeholder='Número de Páginas'
+              autoComplete='off'
               className={styles.inputTcData}
             />
           </div>
@@ -154,13 +154,14 @@ const createInputProcessos = (e) => {
                 <label htmlFor="" className={styles.processQtyLabel}>Número de processos</label>
               </div>
               <input 
-                type='text' 
-                max={8}
+                type='number' 
+                max={12}
                 min={1}
                 name='qtyProcessos'
                 required 
                 onChange={(e) => setQtyProcessos(e.target.value)} 
-                value={qtyProcessos} 
+                value={qtyProcessos}
+                autoComplete='off'
                 className={styles.processQtyInput}
               />
               <div className={styles.processButtonWrapper}>
@@ -171,13 +172,14 @@ const createInputProcessos = (e) => {
               <div className={styles.processQuantumDiv}>
                 <label htmlFor="" className={styles.processQtyLabel}>Quantum</label>
                 <input 
-                  type='text' 
-                  // max={8}
-                  // min={1}
+                  type='number' 
+                  max={10}
+                  min={1}
                   name='quantum'
                   required 
                   // onChange={(e) => setQtyProcessos(e.target.value)} 
-                  // value={qtyProcessos} 
+                  // value={qtyProcessos}
+                  autoComplete='off'
                   className={styles.processQtyInput}
                 />
               </div>
@@ -188,7 +190,9 @@ const createInputProcessos = (e) => {
           </form>
       </section>
       <section className={styles.processWrapper}>
-        {showProcessos}
+        <div className={styles.showProcessDiv}>
+          {showProcessos}
+        </div>
       </section>
       <section className={styles.inputsProcessWrapper}>
         <form onSubmit={callFIFO} className={styles.formForInputs}>

@@ -41,3 +41,12 @@ a:hover,
 nav button:hover {
   color: #bbb;
 }
+
+input[type=number]::-webkit-inner-spin-button { 
+  -webkit-appearance: none;  
+}
+
+input[type=number] { 
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
