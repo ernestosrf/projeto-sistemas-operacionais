@@ -1,3 +1,4 @@
+import {FIFO} from "./troca de paginas/fifo.js";
 /* class processo {
     constructor(tempoChegada, tempoExecucao, deadline) {
       this.tempoChegada = tempoChegada; //tempo de execução
@@ -19,12 +20,13 @@ function escalonamentoRR(processos, quantum) {
 	const encerrados = []; // usada para o turnaround médio no fim da execução
 	
 	while (processos.length) {
-						
-	//tira processo da fila
-	const p = processos.shift();
-						
+
+		
+		//tira processo da fila
+		const p = processos.shift();
+		FIFO(p, 50); //Usa troca de páginas FIFO, caso necessário
 	
-	//caso acabe, atualiza turnaround do processo e o coloca na fila de encerrados
+		//caso acabe, atualiza turnaround do processo e o coloca na fila de encerrados
 		if (p.tempoExecucao <= quantum) {
 			console.log(`Processo executado por ${p.tempoExecucao}ms - Terminado`);
 			tempoAtual += p.tempoExecucao;
