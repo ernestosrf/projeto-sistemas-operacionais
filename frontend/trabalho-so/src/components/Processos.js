@@ -4,7 +4,7 @@ import styles from "./Processos.module.css";
 // funcoes escalonamento
 import fifo from '../data/functions/fifo'
 import { escalonamentoSJF } from '../data/functions/sjf';
-// import { escalonamentoRR } from '../data/functions/rr';
+import { escalonamentoRR } from "../data/functions/rr";
 import { escalonamentoEDF } from '../data/functions/edf';
 
 
@@ -103,6 +103,7 @@ const Processos = () => {
 const [qtyProcessos, setQtyProcessos] = useState(0);
 const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
+const [quantum, setQuantum] = useState(0);
 
 const callFIFO = (e) => {
     e.preventDefault();
@@ -118,7 +119,7 @@ const callSJF = (e) => {
 
 const callRR = (e) => {
   e.preventDefault();
-  // console.log(escalonamentoRR(processos, 2));
+  console.log(escalonamentoRR(processos, quantum));
   setProcessos([]);
 }
 
