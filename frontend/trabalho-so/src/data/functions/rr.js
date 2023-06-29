@@ -1,4 +1,4 @@
-import {FIFO} from "./troca de paginas/fifo.js";
+const {FIFO} = require("./troca de paginas/fifo");
 /* class processo {
     constructor(tempoChegada, tempoExecucao, deadline) {
       this.tempoChegada = tempoChegada; //tempo de execução
@@ -64,4 +64,4 @@ console.log(`Turnaround médio: ${turnaroundMedio.toFixed(2)}ms`); */
 
 module.exports = {
   	escalonamentoRR
-};
+}
