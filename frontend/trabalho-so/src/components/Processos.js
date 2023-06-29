@@ -7,6 +7,7 @@ import { escalonamentoSJF } from '../data/functions/sjf';
 // import { escalonamentoRR } from '../data/functions/rr';
 import { escalonamentoEDF } from '../data/functions/edf';
 
+import GanttChart from './GanttChart';
 
 const ProcessoInput = ({ onProcessCreated }) => {
   const [tempoChegada, setTempoChegada] = useState(0);
@@ -104,10 +105,13 @@ const [qtyProcessos, setQtyProcessos] = useState(0);
 const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
 
+// const [displayFIFO, setDisplayFIFO] = useState('none');
+
 const callFIFO = (e) => {
-    e.preventDefault();
-    console.log(fifo.escalonamentoFIFO(processos));
-    setProcessos([]);
+  e.preventDefault();
+  console.log(fifo.escalonamentoFIFO(processos));
+  // setDisplayFIFO('flex');
+  setProcessos([]);
 }
 
 const callSJF = (e) => {
@@ -145,6 +149,19 @@ const createInputProcessos = (e) => {
 
 }
 
+  let tempoAtual = 0;
+
+  const processosFIFO = processos.map((processo) => {
+    const inicio = Math.max(tempoAtual, processo.tempoChegada);
+    const fim = inicio + processo.tempoExecucao;
+    tempoAtual = fim;
+    return {
+      ...processo,
+      tempoChegada: inicio,
+      tempoExecucao: fim,
+    };
+  });
+
   return (
     <div>
       <section className={styles.processQtyAndQuantumWrapper}>
@@ -176,7 +193,7 @@ const createInputProcessos = (e) => {
                   max={10}
                   min={1}
                   name='quantum'
-                  required 
+                  // required 
                   // onChange={(e) => setQtyProcessos(e.target.value)} 
                   // value={qtyProcessos}
                   autoComplete='off'
@@ -207,6 +224,22 @@ const createInputProcessos = (e) => {
         <form onSubmit={callEDF} className={styles.formForInputs}>
           <button type='submit' className={styles.inputProcess}>EDF</button>
         </form>
+      </section>
+
+      {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
+      <section className={styles.graphFIFOProcessWrapper}>.
+        <h1>Gráfico de Escalonamento FIFO</h1>
+        <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
+          <GanttChart data={processosFIFO} />
+        </div>
+        <div className={styles.divChartGraphFifoInfos}>
+          <p>Turnaround: {fifo.escalonamentoFIFO(processos).tempoExecucaoTotal}/{fifo.escalonamentoFIFO(processos).qtyProcessos} = {fifo.escalonamentoFIFO(processos).tempoMedioEspera}</p>
+        </div>
+        <div className={styles.chartGraphSubtitleFifo}>
+           <p>Legenda:</p>
+           <div className={styles.subtitleForExec}></div>
+           <p>Executado</p>
+        </div>
       </section>
     </div>
   )

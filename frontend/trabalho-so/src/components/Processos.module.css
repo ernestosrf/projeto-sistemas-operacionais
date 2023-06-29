@@ -255,3 +255,61 @@
     background: transparent; */
     /* display: none; */
 }
+
+/* Graph Process Wrapper */
+
+.graphFIFOProcessWrapper {
+    min-width: calc(100% - 1em);
+    background-color: #edf3f6;
+    margin-bottom: 1em;
+    padding: .5em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+}
+
+.graphFIFOProcessWrapper h1 {
+    width: 100%;
+    height: 40px;
+    margin-top: -.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+    font-family: "Montserrat", sans-serif;
+}
+
+.divChartGraphFifo {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.divChartGraphFifoInfos {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 1.4em;
+}
+
+.chartGraphSubtitleFifo {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 1.4em;
+    gap: .5em;
+}
+
+.subtitleForExec {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #0000FF;
+} 
