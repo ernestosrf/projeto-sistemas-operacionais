@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
 
-const GanttChart = ({ data }) => {
+const GanttChartFIFO = ({ data }) => {
 
   const chartData = [
     [
@@ -56,4 +56,4 @@ const GanttChart = ({ data }) => {
   );
 };
 
-export default GanttChart;
+export default GanttChartFIFO;

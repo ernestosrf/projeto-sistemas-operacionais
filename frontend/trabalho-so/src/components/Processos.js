@@ -7,7 +7,9 @@ import { escalonamentoSJF } from '../data/functions/sjf';
 import { escalonamentoRR } from "../data/functions/rr";
 import { escalonamentoEDF } from '../data/functions/edf';
 
-import GanttChart from './GanttChart';
+import GanttChartFifo from './GanttChartFifo';
+import GanttChartSJF from './GrantChartSjs';
+
 
 const ProcessoInput = ({ onProcessCreated }) => {
   const [tempoChegada, setTempoChegada] = useState(0);
@@ -150,18 +152,79 @@ const createInputProcessos = (e) => {
 
 }
 
-  let tempoAtual = 0;
-
+  let tempoAtualFIFO = 0;
   const processosFIFO = processos.map((processo) => {
-    const inicio = Math.max(tempoAtual, processo.tempoChegada);
+    const inicio = Math.max(tempoAtualFIFO, processo.tempoChegada);
     const fim = inicio + processo.tempoExecucao;
-    tempoAtual = fim;
+    tempoAtualFIFO = fim;
     return {
       ...processo,
       tempoChegada: inicio,
       tempoExecucao: fim,
     };
   });
+
+  // let tempoAtualSJF = 0;
+  // const processosSJF = [...processos].sort((a, b) => a.tempoExecucao - b.tempoExecucao);
+  // const processosSJFResult = [];
+
+  // while (processosSJF.length > 0) {
+  //   const nextProcessIndex = processosSJF.findIndex(
+  //     (processo) => processo.tempoChegada <= tempoAtualSJF
+  //   );
+  //   let nextProcess;
+  //   if (nextProcessIndex !== -1) {
+  //     nextProcess = processosSJF.splice(nextProcessIndex, 1)[0];
+  //   } else {
+  //     nextProcess = processosSJF.shift();
+  //   }
+  //   const inicio = Math.max(tempoAtualSJF, nextProcess.tempoChegada);
+  //   const fim = inicio + nextProcess.tempoExecucao;
+  //   tempoAtualSJF = fim;
+  //   processosSJFResult.push({
+  //     ...nextProcess,
+  //     tempoChegada: inicio,
+  //     tempoExecucao: fim,
+  //   });
+  // }
+
+  let tempoAtualSJF = 0;
+  const processosSJF = [...processos].map((processo, index) => ({
+    ...processo,
+    indexOriginal: index,
+  }));
+  const processosSJFResult = [];
+
+  while (processosSJF.length > 0) {
+    const nextProcessIndex = processosSJF.findIndex(
+      (processo) => processo.tempoChegada <= tempoAtualSJF
+    );
+    let nextProcess;
+    if (nextProcessIndex !== -1) {
+      const availableProcesses = processosSJF.filter(
+        (processo) => processo.tempoChegada <= tempoAtualSJF
+      );
+      nextProcess = availableProcesses.reduce((prev, curr) =>
+        prev.tempoExecucao < curr.tempoExecucao ? prev : curr
+      );
+      processosSJF.splice(
+        processosSJF.findIndex((p) => p === nextProcess),
+        1
+      );
+    } else {
+      nextProcess = processosSJF.shift();
+    }
+    const inicio = Math.max(tempoAtualSJF, nextProcess.tempoChegada);
+    const fim = inicio + nextProcess.tempoExecucao;
+    tempoAtualSJF = fim;
+    processosSJFResult.push({
+      ...nextProcess,
+      tempoChegada: inicio,
+      tempoExecucao: fim,
+    });
+  }
+
+  const sortedData = processosSJFResult.sort((a, b) => a.indexOriginal - b.indexOriginal);
 
   return (
     <div>
@@ -228,10 +291,10 @@ const createInputProcessos = (e) => {
       </section>
 
       {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
-      <section className={styles.graphFIFOProcessWrapper}>.
+      {/* <section className={styles.graphFIFOProcessWrapper}>.
         <h1>Gráfico de Escalonamento FIFO</h1>
         <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
-          <GanttChart data={processosFIFO} />
+          <GanttChartFifo data={processosFIFO} />
         </div>
         <div className={styles.divChartGraphFifoInfos}>
           <p>Turnaround: {fifo.escalonamentoFIFO(processos).tempoExecucaoTotal}/{fifo.escalonamentoFIFO(processos).qtyProcessos} = {fifo.escalonamentoFIFO(processos).tempoMedioEspera}</p>
@@ -241,7 +304,39 @@ const createInputProcessos = (e) => {
            <div className={styles.subtitleForExec}></div>
            <p>Executado</p>
         </div>
+      </section> */}
+
+      {/* <section className={styles.graphFIFOProcessWrapper}>.
+        <h1>Gráfico de Escalonamento SJF</h1>
+        <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
+          <GanttChartSJF data={processosSJF} />
+        </div>
+        <div className={styles.divChartGraphFifoInfos}>
+          <p>Turnaround: {escalonamentoSJF(processos, qtyProcessos).tempoExecucaoTotal}/{escalonamentoSJF(processos, qtyProcessos).qtyProcessos} = {escalonamentoSJF(processos, qtyProcessos).tempoMedioEspera}</p>
+        </div>
+        <div className={styles.chartGraphSubtitleFifo}>
+           <p>Legenda:</p>
+           <div className={styles.subtitleForExec}></div>
+           <p>Executado</p>
+        </div>
+      </section> */}
+
+      <section className={styles.graphFIFOProcessWrapper}>
+        <h1>Gráfico de Escalonamento SJF</h1>
+        <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
+          {/* <GanttChartSJF data={processosSJFResult} /> */}
+          <GanttChartSJF data={sortedData} />
+        </div>
+        {/* <div className={styles.divChartGraphFifoInfos}>
+          <p>Turnaround: {escalonamentoSJF(processos, qtyProcessos).tempoExecucaoTotal}/{escalonamentoSJF(processos, qtyProcessos).qtyProcessos} = {escalonamentoSJF(processos, qtyProcessos).tempoMedioEspera}</p>
+        </div>
+        <div className={styles.chartGraphSubtitleFifo}>
+           <p>Legenda:</p>
+           <div className={styles.subtitleForExec}></div>
+           <p>Executado</p>
+        </div> */}
       </section>
+
     </div>
   )
 }
