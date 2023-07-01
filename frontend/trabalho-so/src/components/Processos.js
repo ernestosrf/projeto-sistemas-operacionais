@@ -11,7 +11,7 @@ import GanttChartFifo from './GanttChartFifo';
 import GanttChartSJF from './GrantChartSjs';
 
 
-const ProcessoInput = ({ onProcessCreated }) => {
+const ProcessoInput = ({ onProcessCreated, processNumber }) => {
   const [tempoChegada, setTempoChegada] = useState(0);
   const [tempoExecucao, setTempoExecucao] = useState(0);
   const [deadline, setDeadline] = useState(0);
@@ -44,7 +44,7 @@ const ProcessoInput = ({ onProcessCreated }) => {
     return (
       <section className={styles.processDataWrapper}>
         <div className={styles.titleProcessData}>
-          <label htmlFor="">Processo Nº "X":</label>
+          <label htmlFor="">Processo Nº {processNumber+1}:</label>
         </div>
         <div className={styles.valuesProcessData}>
           <div className={styles.divTcData}>
@@ -145,7 +145,7 @@ const createInputProcessos = (e) => {
     const inputs = [];
 
     for (let i = 0; i < qtyProcessos; i++) {
-        inputs.push(<ProcessoInput key={i} onProcessCreated={handleProcessCreated}/>);
+        inputs.push(<ProcessoInput key={i} onProcessCreated={handleProcessCreated} processNumber={i}/>);
       }
   
       setShowProcessos(inputs);
@@ -236,7 +236,7 @@ const createInputProcessos = (e) => {
               </div>
               <input 
                 type='number' 
-                max={12}
+                max={8}
                 min={1}
                 name='qtyProcessos'
                 required 
