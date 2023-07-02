@@ -11,40 +11,13 @@ import GanttChartFifo from './GanttChartFifo';
 import GanttChartSJF from './GrantChartSjs';
 
 
-const ProcessoInput = ({ onProcessCreated }) => {
-  const [tempoChegada, setTempoChegada] = useState(0);
-  const [tempoExecucao, setTempoExecucao] = useState(0);
-  const [deadline, setDeadline] = useState(0);
-  const [nPaginas, setNPaginas] = useState(0);
-  const [contador, setContador] = useState(0); //contador para criar páginas de cada processo 
-  const [contadorAnt, setContadorAnt] = useState(0); //armazena contador anterior e cria da página seguinte até a última que do processo corrente
-
-  const handleCreateProcesso = () => {
-    const process = new fifo.Processo(
-      Number(tempoChegada),
-      Number(tempoExecucao),
-      Number(deadline),
-      Number(nPaginas),
-      geradorPaginas(contador)
-    );
-    onProcessCreated(process);
-
-    setContadorAnt(contador);
-    setContador(contador + Number(nPaginas)); // Atualiza o contador com base em nPaginas
-  };
-
-  const geradorPaginas = (contador) => {
-    const pags = [];
-    for (let i = contadorAnt; i < contador; i++) {
-    	pags.push(i);
-    };
-	return pags;  
-  }
+const ProcessoInput = ({ processNumber, tempoChegada, setTempoChegada, 
+  tempoExecucao, setTempoExecucao, deadline, setDeadline, nPaginas, setNPaginas }) => {
   
     return (
       <section className={styles.processDataWrapper}>
         <div className={styles.titleProcessData}>
-          <label htmlFor="">Processo Nº "X":</label>
+          <label htmlFor="">Processo Nº {processNumber+1}:</label>
         </div>
         <div className={styles.valuesProcessData}>
           <div className={styles.divTcData}>
@@ -53,8 +26,14 @@ const ProcessoInput = ({ onProcessCreated }) => {
               type='number'
               name='tempoChegada'
               required
-              value={tempoChegada}
-              onChange={(e) => setTempoChegada(e.target.value)}
+              value={tempoChegada[processNumber]}
+              onChange={(e) => {
+                setTempoChegada(prevTempoChegada => {
+                  const updatedTempoChegada = [...prevTempoChegada];
+                  updatedTempoChegada[processNumber] = e.target.value;
+                  return updatedTempoChegada;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
@@ -65,8 +44,14 @@ const ProcessoInput = ({ onProcessCreated }) => {
               type='number'
               name='tempoExecucao'
               required
-              value={tempoExecucao}
-              onChange={(e) => setTempoExecucao(e.target.value)}
+              value={tempoExecucao[processNumber]}
+              onChange={(e) => {
+                setTempoExecucao(prevTempoExecucao => {
+                  const updatedTempoExecucao = [...prevTempoExecucao];
+                  updatedTempoExecucao[processNumber] = e.target.value;
+                  return updatedTempoExecucao;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
@@ -77,8 +62,14 @@ const ProcessoInput = ({ onProcessCreated }) => {
               type='number'
               name='deadline'
               required
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
+              value={deadline[processNumber]}
+              onChange={(e) => {
+                setDeadline(prevDeadline => {
+                  const updatedDeadline = [...prevDeadline];
+                  updatedDeadline[processNumber] = e.target.value;
+                  return updatedDeadline;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
@@ -89,55 +80,71 @@ const ProcessoInput = ({ onProcessCreated }) => {
               type='number'
               name='nPaginas'
               required
-              value={nPaginas}
-              onChange={(e) => setNPaginas(e.target.value)}
+              value={nPaginas[processNumber]}
+              onChange={(e) => {
+                setNPaginas(prevNPaginas => {
+                  const updatedNPaginas = [...prevNPaginas];
+                  updatedNPaginas[processNumber] = e.target.value;
+                  return updatedNPaginas;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
           </div>
         </div>
-        <button onClick={handleCreateProcesso} className={styles.inputHiddenTcData}>Create Process</button>
       </section>
     );
   };
 
 const Processos = () => {
-
+const [tempoChegada, setTempoChegada] = useState([]);
+const [tempoExecucao, setTempoExecucao] = useState([]);
+const [deadline, setDeadline] = useState([]);
+const [nPaginas, setNPaginas] = useState([]);
+const [contador, setContador] = useState([]); //contador para criar páginas de cada processo 
+const [contadorAnt, setContadorAnt] = useState([]); //armazena contador anterior e cria da página seguinte até a última que do processo corrente
 const [qtyProcessos, setQtyProcessos] = useState(0);
 const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
 const [quantum, setQuantum] = useState(0);
+const [showButtons, setShowButtons] = useState(true);
 
 // const [displayFIFO, setDisplayFIFO] = useState('none');
 
 const callFIFO = (e) => {
   e.preventDefault();
-  console.log(fifo.escalonamentoFIFO(processos));
+  handleCreateAllProcess()
+  handleButtonClick()
   // setDisplayFIFO('flex');
-  setProcessos([]);
 }
 
 const callSJF = (e) => {
   e.preventDefault();
-  console.log(escalonamentoSJF(processos, qtyProcessos));
-  setProcessos([]);
+  handleCreateAllProcess()
+  handleButtonClick()
 }
 
 const callRR = (e) => {
   e.preventDefault();
-  console.log(escalonamentoRR(processos, quantum));
-  setProcessos([]);
+  handleCreateAllProcess()
+  handleButtonClick()
 }
 
 const callEDF = (e) => {
   e.preventDefault();
-  // console.log(escalonamentoEDF(processos, 2, 1));
-  setProcessos([]);
+  handleCreateAllProcess()
+  handleButtonClick()
 }
 
-const handleProcessCreated = (process) => {
-    setProcessos((prevProcessos) => [...prevProcessos, process]);
-  };
+const handleButtonClick = () => {
+  setShowButtons(false);
+};
+
+const handleBackButtonClick = () => {
+  setShowButtons(true);
+  setProcessos([]);
+};
 
 const createInputProcessos = (e) => {
     e.preventDefault();
@@ -145,12 +152,47 @@ const createInputProcessos = (e) => {
     const inputs = [];
 
     for (let i = 0; i < qtyProcessos; i++) {
-        inputs.push(<ProcessoInput key={i} onProcessCreated={handleProcessCreated}/>);
+        inputs.push(<ProcessoInput key={i} 
+          processNumber={i} 
+          tempoChegada={tempoChegada}
+          setTempoChegada={setTempoChegada}
+          tempoExecucao={tempoExecucao} 
+          setTempoExecucao={setTempoExecucao}
+          deadline={deadline} 
+          setDeadline={setDeadline}
+          nPaginas={nPaginas} 
+          setNPaginas={setNPaginas} />);
       }
   
       setShowProcessos(inputs);
 
 }
+
+  const handleCreateAllProcess = () => {
+    for (let i = 0; i < qtyProcessos; i++) {
+      const process = new fifo.Processo(
+        Number(tempoChegada[i]),
+        Number(tempoExecucao[i]),
+        Number(deadline[i]),
+        Number(nPaginas[i]),
+        // geradorPaginas(contador[i])
+      );
+      console.log(process)
+      setProcessos((prevProcessos) => [...prevProcessos, process]);
+
+      setContadorAnt(contador[i]);
+      setContador(contador[i] + Number(nPaginas[i])); // Atualiza o contador com base em nPaginas
+    }
+
+    // const geradorPaginas = (contador) => {
+    //   const pags = [];
+    //   for (let i = contadorAnt; i < contador; i++) {
+    //     pags.push(i);
+    //   };
+    // return pags;  
+    // }
+
+  };
 
   let tempoAtualFIFO = 0;
   const processosFIFO = processos.map((processo) => {
@@ -226,6 +268,31 @@ const createInputProcessos = (e) => {
 
   const sortedData = processosSJFResult.sort((a, b) => a.indexOriginal - b.indexOriginal);
 
+  const renderButtons = () => {
+    if (showButtons) {
+      return (
+        <section className={styles.inputsProcessWrapper}>
+          <form onSubmit={callFIFO} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>FIFO</button>
+          </form>
+          <form onSubmit={callSJF} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>SJF</button>
+          </form>
+          <form onSubmit={callRR} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>Round Robin</button>
+          </form>
+          <form onSubmit={callEDF} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>EDF</button>
+          </form>
+        </section>
+      );
+    } else {
+      return (
+        <button onClick={handleBackButtonClick} className={styles.inputProcess}>Voltar</button>
+      );
+    }
+  };
+
   return (
     <div>
       <section className={styles.processQtyAndQuantumWrapper}>
@@ -236,7 +303,7 @@ const createInputProcessos = (e) => {
               </div>
               <input 
                 type='number' 
-                max={12}
+                max={8}
                 min={1}
                 name='qtyProcessos'
                 required 
@@ -257,9 +324,8 @@ const createInputProcessos = (e) => {
                   max={10}
                   min={1}
                   name='quantum'
-                  // required 
-                  // onChange={(e) => setQtyProcessos(e.target.value)} 
-                  // value={qtyProcessos}
+                  onChange={(e) => setQuantum(e.target.value)} 
+                  value={quantum}
                   autoComplete='off'
                   className={styles.processQtyInput}
                 />
@@ -275,7 +341,8 @@ const createInputProcessos = (e) => {
           {showProcessos}
         </div>
       </section>
-      <section className={styles.inputsProcessWrapper}>
+      {renderButtons()}
+      {/* <section className={styles.inputsProcessWrapper}>
         <form onSubmit={callFIFO} className={styles.formForInputs}>
           <button type='submit' className={styles.inputProcess}>FIFO</button>
         </form>
@@ -288,10 +355,10 @@ const createInputProcessos = (e) => {
         <form onSubmit={callEDF} className={styles.formForInputs}>
           <button type='submit' className={styles.inputProcess}>EDF</button>
         </form>
-      </section>
+      </section> */}
 
       {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
-      {/* <section className={styles.graphFIFOProcessWrapper}>.
+      <section className={styles.graphFIFOProcessWrapper}>.
         <h1>Gráfico de Escalonamento FIFO</h1>
         <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
           <GanttChartFifo data={processosFIFO} />
@@ -304,7 +371,7 @@ const createInputProcessos = (e) => {
            <div className={styles.subtitleForExec}></div>
            <p>Executado</p>
         </div>
-      </section> */}
+      </section>
 
       {/* <section className={styles.graphFIFOProcessWrapper}>.
         <h1>Gráfico de Escalonamento SJF</h1>
@@ -321,21 +388,20 @@ const createInputProcessos = (e) => {
         </div>
       </section> */}
 
-      <section className={styles.graphFIFOProcessWrapper}>
+      {/* <section className={styles.graphFIFOProcessWrapper}>
         <h1>Gráfico de Escalonamento SJF</h1>
         <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
-          {/* <GanttChartSJF data={processosSJFResult} /> */}
           <GanttChartSJF data={sortedData} />
         </div>
-        {/* <div className={styles.divChartGraphFifoInfos}>
+        <div className={styles.divChartGraphFifoInfos}>
           <p>Turnaround: {escalonamentoSJF(processos, qtyProcessos).tempoExecucaoTotal}/{escalonamentoSJF(processos, qtyProcessos).qtyProcessos} = {escalonamentoSJF(processos, qtyProcessos).tempoMedioEspera}</p>
         </div>
         <div className={styles.chartGraphSubtitleFifo}>
            <p>Legenda:</p>
            <div className={styles.subtitleForExec}></div>
            <p>Executado</p>
-        </div> */}
-      </section>
+        </div>
+      </section> */}
 
     </div>
   )
