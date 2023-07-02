@@ -1,0 +1,55 @@
+.paginas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: rgb(128, 238, 238);
+    width: 350px;
+    height: 500px;
+    box-sizing: border-box;
+    margin: auto;
+    object-fit: fit;
+    padding-top: 45px;
+    padding-bottom: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:2px solid black;
+    margin-bottom: 30px;
+  
+  }
+  
+  .disco {
+    width: 350px;
+    height: 500px;
+    margin: auto;
+  }
+  
+  .pag {
+    margin: 3px;
+    background-color: rgb(241, 234, 238);
+    border: 1px solid black;
+    width: 30px;
+    height: 20px;
+  }
+  
+  .top-ellipse {
+    position:relative;
+    border-radius: 50%;
+    border:2px solid black;
+    top: 45px;
+    width: 99%;
+    height: 90px;
+    border-radius: 50%;
+    background-color: rgb(128, 238, 238);
+  }
+  
+  .bottom-ellipse {
+    position:relative;
+    width: 99%;
+    height: 70px;
+    bottom: 35px;
+    border-radius: 50% / 0 0 100% 100%; 
+    border: 2px solid black;
+    border-top: none;
+    background-color: rgb(128, 238, 238);
+  }
+  
