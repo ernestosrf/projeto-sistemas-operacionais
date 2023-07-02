@@ -282,6 +282,8 @@
 .divChartGraphFifo {
     width: 100%;
     margin-bottom: 1em;
+    /* height: 400px; */
+    /* background-color: saddlebrown; */
 }
 
 .divChartGraphFifoInfos {

@@ -310,7 +310,8 @@ const createInputProcessos = (e) => {
       return (
         <section className={styles.graphFIFOProcessWrapper}>.
           <h1>Gráfico de Escalonamento FIFO</h1>
-          <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
+          {/* <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}> */}
+          <div className={styles.divChartGraphFifo}>
             <GanttChartFifo data={processosFIFO} />
           </div>
           <div className={styles.divChartGraphFifoInfos}>
