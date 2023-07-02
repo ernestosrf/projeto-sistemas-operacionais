@@ -109,14 +109,13 @@ const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
 const [quantum, setQuantum] = useState(0);
 const [showButtons, setShowButtons] = useState(true);
-
-// const [displayFIFO, setDisplayFIFO] = useState('none');
+const [showFifoGraph, setShowFifoGraph] = useState(false);
 
 const callFIFO = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
   handleButtonClick()
-  // setDisplayFIFO('flex');
+  showSectionFIFO()
 }
 
 const callSJF = (e) => {
@@ -143,7 +142,16 @@ const handleButtonClick = () => {
 
 const handleBackButtonClick = () => {
   setShowButtons(true);
+  hiddenSectionFIFO()
   setProcessos([]);
+};
+
+const showSectionFIFO = () => {
+  setShowFifoGraph(true);
+};
+
+const hiddenSectionFIFO = () => {
+  setShowFifoGraph(false);
 };
 
 const createInputProcessos = (e) => {
@@ -288,7 +296,32 @@ const createInputProcessos = (e) => {
       );
     } else {
       return (
-        <button onClick={handleBackButtonClick} className={styles.inputProcess}>Voltar</button>
+        <section className={styles.inputsProcessWrapper}>
+          <div className={styles.formForInputs}>
+            <button onClick={handleBackButtonClick} className={styles.inputProcess}>Voltar</button>
+          </div>
+        </section>
+      );
+    }
+  };
+
+  const renderFIFOSection = () => {
+    if (showFifoGraph) {
+      return (
+        <section className={styles.graphFIFOProcessWrapper}>.
+          <h1>Gráfico de Escalonamento FIFO</h1>
+          <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
+            <GanttChartFifo data={processosFIFO} />
+          </div>
+          <div className={styles.divChartGraphFifoInfos}>
+            <p>Turnaround: {fifo.escalonamentoFIFO(processos).tempoExecucaoTotal}/{fifo.escalonamentoFIFO(processos).qtyProcessos} = {fifo.escalonamentoFIFO(processos).tempoMedioEspera}</p>
+          </div>
+          <div className={styles.chartGraphSubtitleFifo}>
+            <p>Legenda:</p>
+            <div className={styles.subtitleForExec}></div>
+            <p>Executado</p>
+          </div>
+        </section>
       );
     }
   };
@@ -342,36 +375,13 @@ const createInputProcessos = (e) => {
         </div>
       </section>
       {renderButtons()}
-      {/* <section className={styles.inputsProcessWrapper}>
-        <form onSubmit={callFIFO} className={styles.formForInputs}>
-          <button type='submit' className={styles.inputProcess}>FIFO</button>
-        </form>
-        <form onSubmit={callSJF} className={styles.formForInputs}>
-          <button type='submit' className={styles.inputProcess}>SJF</button>
-        </form>
-        <form onSubmit={callRR} className={styles.formForInputs}>
-          <button type='submit' className={styles.inputProcess}>Round Roubin</button>
-        </form>
-        <form onSubmit={callEDF} className={styles.formForInputs}>
-          <button type='submit' className={styles.inputProcess}>EDF</button>
-        </form>
-      </section> */}
+
 
       {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
-      <section className={styles.graphFIFOProcessWrapper}>.
-        <h1>Gráfico de Escalonamento FIFO</h1>
-        <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
-          <GanttChartFifo data={processosFIFO} />
-        </div>
-        <div className={styles.divChartGraphFifoInfos}>
-          <p>Turnaround: {fifo.escalonamentoFIFO(processos).tempoExecucaoTotal}/{fifo.escalonamentoFIFO(processos).qtyProcessos} = {fifo.escalonamentoFIFO(processos).tempoMedioEspera}</p>
-        </div>
-        <div className={styles.chartGraphSubtitleFifo}>
-           <p>Legenda:</p>
-           <div className={styles.subtitleForExec}></div>
-           <p>Executado</p>
-        </div>
-      </section>
+     
+      {renderFIFOSection()}
+
+
 
       {/* <section className={styles.graphFIFOProcessWrapper}>.
         <h1>Gráfico de Escalonamento SJF</h1>
