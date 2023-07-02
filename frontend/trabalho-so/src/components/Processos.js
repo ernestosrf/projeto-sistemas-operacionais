@@ -110,6 +110,7 @@ const [showProcessos, setShowProcessos] = useState([]);
 const [quantum, setQuantum] = useState(0);
 const [showButtons, setShowButtons] = useState(true);
 const [showFifoGraph, setShowFifoGraph] = useState(false);
+const [showSjfGraph, setShowSjfGraph] = useState(false);
 
 const callFIFO = (e) => {
   e.preventDefault();
@@ -122,6 +123,7 @@ const callSJF = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
   handleButtonClick()
+  showSectionSJF()
 }
 
 const callRR = (e) => {
@@ -143,6 +145,7 @@ const handleButtonClick = () => {
 const handleBackButtonClick = () => {
   setShowButtons(true);
   hiddenSectionFIFO()
+  hiddenSectionSJF()
   setProcessos([]);
 };
 
@@ -152,6 +155,14 @@ const showSectionFIFO = () => {
 
 const hiddenSectionFIFO = () => {
   setShowFifoGraph(false);
+};
+
+const showSectionSJF = () => {
+  setShowSjfGraph(true);
+};
+
+const hiddenSectionSJF = () => {
+  setShowSjfGraph(false);
 };
 
 const createInputProcessos = (e) => {
@@ -214,67 +225,10 @@ const createInputProcessos = (e) => {
     };
   });
 
-  // let tempoAtualSJF = 0;
-  // const processosSJF = [...processos].sort((a, b) => a.tempoExecucao - b.tempoExecucao);
-  // const processosSJFResult = [];
+  // const processosSJF = [...processos]; // Faz uma cópia dos processos
 
-  // while (processosSJF.length > 0) {
-  //   const nextProcessIndex = processosSJF.findIndex(
-  //     (processo) => processo.tempoChegada <= tempoAtualSJF
-  //   );
-  //   let nextProcess;
-  //   if (nextProcessIndex !== -1) {
-  //     nextProcess = processosSJF.splice(nextProcessIndex, 1)[0];
-  //   } else {
-  //     nextProcess = processosSJF.shift();
-  //   }
-  //   const inicio = Math.max(tempoAtualSJF, nextProcess.tempoChegada);
-  //   const fim = inicio + nextProcess.tempoExecucao;
-  //   tempoAtualSJF = fim;
-  //   processosSJFResult.push({
-  //     ...nextProcess,
-  //     tempoChegada: inicio,
-  //     tempoExecucao: fim,
-  //   });
-  // }
-
-  let tempoAtualSJF = 0;
-  const processosSJF = [...processos].map((processo, index) => ({
-    ...processo,
-    indexOriginal: index,
-  }));
-  const processosSJFResult = [];
-
-  while (processosSJF.length > 0) {
-    const nextProcessIndex = processosSJF.findIndex(
-      (processo) => processo.tempoChegada <= tempoAtualSJF
-    );
-    let nextProcess;
-    if (nextProcessIndex !== -1) {
-      const availableProcesses = processosSJF.filter(
-        (processo) => processo.tempoChegada <= tempoAtualSJF
-      );
-      nextProcess = availableProcesses.reduce((prev, curr) =>
-        prev.tempoExecucao < curr.tempoExecucao ? prev : curr
-      );
-      processosSJF.splice(
-        processosSJF.findIndex((p) => p === nextProcess),
-        1
-      );
-    } else {
-      nextProcess = processosSJF.shift();
-    }
-    const inicio = Math.max(tempoAtualSJF, nextProcess.tempoChegada);
-    const fim = inicio + nextProcess.tempoExecucao;
-    tempoAtualSJF = fim;
-    processosSJFResult.push({
-      ...nextProcess,
-      tempoChegada: inicio,
-      tempoExecucao: fim,
-    });
-  }
-
-  const sortedData = processosSJFResult.sort((a, b) => a.indexOriginal - b.indexOriginal);
+  // // Ordena os processos com base no tempo de execução crescente
+  // processosSJF.sort((a, b) => a.tempoExecucao - b.tempoExecucao);
 
   const renderButtons = () => {
     if (showButtons) {
@@ -306,6 +260,7 @@ const createInputProcessos = (e) => {
   };
 
   const renderFIFOSection = () => {
+    let result = fifo.escalonamentoFIFO(processos)
     if (showFifoGraph) {
       return (
         <section className={styles.graphFIFOProcessWrapper}>.
@@ -315,7 +270,7 @@ const createInputProcessos = (e) => {
             <GanttChartFifo data={processosFIFO} />
           </div>
           <div className={styles.divChartGraphFifoInfos}>
-            <p>Turnaround: {fifo.escalonamentoFIFO(processos).tempoExecucaoTotal}/{fifo.escalonamentoFIFO(processos).qtyProcessos} = {fifo.escalonamentoFIFO(processos).tempoMedioEspera}</p>
+            <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p>
           </div>
           <div className={styles.chartGraphSubtitleFifo}>
             <p>Legenda:</p>
@@ -323,6 +278,29 @@ const createInputProcessos = (e) => {
             <p>Executado</p>
           </div>
         </section>
+      );
+    }
+  };
+
+  const renderSJFSection = () => {
+    let result = escalonamentoSJF(processos, qtyProcessos)
+    if (showSjfGraph) {
+      return (
+      <section className={styles.graphFIFOProcessWrapper}>
+        <h1>Gráfico de Escalonamento SJF</h1>
+        {/* <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}> */}
+        <div className={styles.divChartGraphFifo}>
+          <GanttChartSJF data={processosSJF} />
+        </div>
+        <div className={styles.divChartGraphFifoInfos}>
+          <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p>
+        </div>
+        <div className={styles.chartGraphSubtitleFifo}>
+           <p>Legenda:</p>
+           <div className={styles.subtitleForExec}></div>
+           <p>Executado</p>
+        </div>
+      </section>
       );
     }
   };
@@ -381,6 +359,8 @@ const createInputProcessos = (e) => {
       {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
      
       {renderFIFOSection()}
+
+      {renderSJFSection()}
 
 
 
