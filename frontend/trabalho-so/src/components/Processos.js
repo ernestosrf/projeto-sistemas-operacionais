@@ -11,35 +11,8 @@ import GanttChartFifo from './GanttChartFifo';
 import GanttChartSJF from './GrantChartSjs';
 
 
-const ProcessoInput = ({ onProcessCreated, processNumber }) => {
-  const [tempoChegada, setTempoChegada] = useState(0);
-  const [tempoExecucao, setTempoExecucao] = useState(0);
-  const [deadline, setDeadline] = useState(0);
-  const [nPaginas, setNPaginas] = useState(0);
-  const [contador, setContador] = useState(0); //contador para criar páginas de cada processo 
-  const [contadorAnt, setContadorAnt] = useState(0); //armazena contador anterior e cria da página seguinte até a última que do processo corrente
-
-  const handleCreateProcesso = () => {
-    const process = new fifo.Processo(
-      Number(tempoChegada),
-      Number(tempoExecucao),
-      Number(deadline),
-      Number(nPaginas),
-      geradorPaginas(contador)
-    );
-    onProcessCreated(process);
-
-    setContadorAnt(contador);
-    setContador(contador + Number(nPaginas)); // Atualiza o contador com base em nPaginas
-  };
-
-  const geradorPaginas = (contador) => {
-    const pags = [];
-    for (let i = contadorAnt; i < contador; i++) {
-    	pags.push(i);
-    };
-	return pags;  
-  }
+const ProcessoInput = ({ processNumber, tempoChegada, setTempoChegada, 
+  tempoExecucao, setTempoExecucao, deadline, setDeadline, nPaginas, setNPaginas }) => {
   
     return (
       <section className={styles.processDataWrapper}>
@@ -53,8 +26,14 @@ const ProcessoInput = ({ onProcessCreated, processNumber }) => {
               type='number'
               name='tempoChegada'
               required
-              value={tempoChegada}
-              onChange={(e) => setTempoChegada(e.target.value)}
+              value={tempoChegada[processNumber]}
+              onChange={(e) => {
+                setTempoChegada(prevTempoChegada => {
+                  const updatedTempoChegada = [...prevTempoChegada];
+                  updatedTempoChegada[processNumber] = e.target.value;
+                  return updatedTempoChegada;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
@@ -65,8 +44,14 @@ const ProcessoInput = ({ onProcessCreated, processNumber }) => {
               type='number'
               name='tempoExecucao'
               required
-              value={tempoExecucao}
-              onChange={(e) => setTempoExecucao(e.target.value)}
+              value={tempoExecucao[processNumber]}
+              onChange={(e) => {
+                setTempoExecucao(prevTempoExecucao => {
+                  const updatedTempoExecucao = [...prevTempoExecucao];
+                  updatedTempoExecucao[processNumber] = e.target.value;
+                  return updatedTempoExecucao;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
@@ -77,8 +62,14 @@ const ProcessoInput = ({ onProcessCreated, processNumber }) => {
               type='number'
               name='deadline'
               required
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
+              value={deadline[processNumber]}
+              onChange={(e) => {
+                setDeadline(prevDeadline => {
+                  const updatedDeadline = [...prevDeadline];
+                  updatedDeadline[processNumber] = e.target.value;
+                  return updatedDeadline;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
@@ -89,20 +80,30 @@ const ProcessoInput = ({ onProcessCreated, processNumber }) => {
               type='number'
               name='nPaginas'
               required
-              value={nPaginas}
-              onChange={(e) => setNPaginas(e.target.value)}
+              value={nPaginas[processNumber]}
+              onChange={(e) => {
+                setNPaginas(prevNPaginas => {
+                  const updatedNPaginas = [...prevNPaginas];
+                  updatedNPaginas[processNumber] = e.target.value;
+                  return updatedNPaginas;
+                });
+              }}
               autoComplete='off'
               className={styles.inputTcData}
             />
           </div>
         </div>
-        <button onClick={handleCreateProcesso} className={styles.inputHiddenTcData}>Create Process</button>
       </section>
     );
   };
 
 const Processos = () => {
-
+const [tempoChegada, setTempoChegada] = useState([]);
+const [tempoExecucao, setTempoExecucao] = useState([]);
+const [deadline, setDeadline] = useState([]);
+const [nPaginas, setNPaginas] = useState([]);
+const [contador, setContador] = useState([]); //contador para criar páginas de cada processo 
+const [contadorAnt, setContadorAnt] = useState([]); //armazena contador anterior e cria da página seguinte até a última que do processo corrente
 const [qtyProcessos, setQtyProcessos] = useState(0);
 const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
@@ -112,32 +113,25 @@ const [quantum, setQuantum] = useState(0);
 
 const callFIFO = (e) => {
   e.preventDefault();
-  console.log(fifo.escalonamentoFIFO(processos));
+  handleCreateAllProcess()
   // setDisplayFIFO('flex');
-  setProcessos([]);
 }
 
 const callSJF = (e) => {
   e.preventDefault();
-  console.log(escalonamentoSJF(processos, qtyProcessos));
-  setProcessos([]);
+  handleCreateAllProcess()
 }
 
 const callRR = (e) => {
   e.preventDefault();
-  console.log(escalonamentoRR(processos, quantum));
-  setProcessos([]);
+  handleCreateAllProcess()
 }
 
 const callEDF = (e) => {
   e.preventDefault();
-  // console.log(escalonamentoEDF(processos, 2, 1));
-  setProcessos([]);
+  handleCreateAllProcess()
 }
 
-const handleProcessCreated = (process) => {
-    setProcessos((prevProcessos) => [...prevProcessos, process]);
-  };
 
 const createInputProcessos = (e) => {
     e.preventDefault();
@@ -145,12 +139,53 @@ const createInputProcessos = (e) => {
     const inputs = [];
 
     for (let i = 0; i < qtyProcessos; i++) {
-        inputs.push(<ProcessoInput key={i} onProcessCreated={handleProcessCreated} processNumber={i}/>);
+        inputs.push(<ProcessoInput key={i} 
+          processNumber={i} 
+          tempoChegada={tempoChegada}
+          setTempoChegada={setTempoChegada}
+          tempoExecucao={tempoExecucao} 
+          setTempoExecucao={setTempoExecucao}
+          deadline={deadline} 
+          setDeadline={setDeadline}
+          nPaginas={nPaginas} 
+          setNPaginas={setNPaginas} />);
       }
   
       setShowProcessos(inputs);
 
 }
+
+  const handleCreateAllProcess = () => {
+    for (let i = 0; i < qtyProcessos; i++) {
+      const process = new fifo.Processo(
+        Number(tempoChegada[i]),
+        Number(tempoExecucao[i]),
+        Number(deadline[i]),
+        Number(nPaginas[i]),
+        // geradorPaginas(contador[i])
+      );
+      console.log(process)
+      setProcessos((prevProcessos) => [...prevProcessos, process]);
+
+      setContadorAnt(contador[i]);
+      setContador(contador[i] + Number(nPaginas[i])); // Atualiza o contador com base em nPaginas
+    }
+
+    // const geradorPaginas = (contador) => {
+    //   const pags = [];
+    //   for (let i = contadorAnt; i < contador; i++) {
+    //     pags.push(i);
+    //   };
+    // return pags;  
+    // }
+
+    console.log(tempoChegada)
+    console.log(tempoExecucao)
+    console.log(deadline)
+    console.log(nPaginas)
+    console.log(processos)
+
+  };
 
   let tempoAtualFIFO = 0;
   const processosFIFO = processos.map((processo) => {
@@ -173,7 +208,7 @@ const createInputProcessos = (e) => {
   //     (processo) => processo.tempoChegada <= tempoAtualSJF
   //   );
   //   let nextProcess;
-  //   if (nextProcessIndex !== -1) {
+  //   if (nextProcessIndex !== -1) {quantum
   //     nextProcess = processosSJF.splice(nextProcessIndex, 1)[0];
   //   } else {
   //     nextProcess = processosSJF.shift();
@@ -257,9 +292,8 @@ const createInputProcessos = (e) => {
                   max={10}
                   min={1}
                   name='quantum'
-                  // required 
-                  // onChange={(e) => setQtyProcessos(e.target.value)} 
-                  // value={qtyProcessos}
+                  onChange={(e) => setQuantum(e.target.value)} 
+                  value={quantum}
                   autoComplete='off'
                   className={styles.processQtyInput}
                 />
@@ -291,7 +325,7 @@ const createInputProcessos = (e) => {
       </section>
 
       {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
-      {/* <section className={styles.graphFIFOProcessWrapper}>.
+      <section className={styles.graphFIFOProcessWrapper}>.
         <h1>Gráfico de Escalonamento FIFO</h1>
         <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
           <GanttChartFifo data={processosFIFO} />
@@ -304,7 +338,7 @@ const createInputProcessos = (e) => {
            <div className={styles.subtitleForExec}></div>
            <p>Executado</p>
         </div>
-      </section> */}
+      </section>
 
       {/* <section className={styles.graphFIFOProcessWrapper}>.
         <h1>Gráfico de Escalonamento SJF</h1>
@@ -321,21 +355,20 @@ const createInputProcessos = (e) => {
         </div>
       </section> */}
 
-      <section className={styles.graphFIFOProcessWrapper}>
+      {/* <section className={styles.graphFIFOProcessWrapper}>
         <h1>Gráfico de Escalonamento SJF</h1>
         <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
-          {/* <GanttChartSJF data={processosSJFResult} /> */}
           <GanttChartSJF data={sortedData} />
         </div>
-        {/* <div className={styles.divChartGraphFifoInfos}>
+        <div className={styles.divChartGraphFifoInfos}>
           <p>Turnaround: {escalonamentoSJF(processos, qtyProcessos).tempoExecucaoTotal}/{escalonamentoSJF(processos, qtyProcessos).qtyProcessos} = {escalonamentoSJF(processos, qtyProcessos).tempoMedioEspera}</p>
         </div>
         <div className={styles.chartGraphSubtitleFifo}>
            <p>Legenda:</p>
            <div className={styles.subtitleForExec}></div>
            <p>Executado</p>
-        </div> */}
-      </section>
+        </div>
+      </section> */}
 
     </div>
   )
