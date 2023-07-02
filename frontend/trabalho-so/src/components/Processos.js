@@ -215,7 +215,7 @@ const createInputProcessos = (e) => {
   //     (processo) => processo.tempoChegada <= tempoAtualSJF
   //   );
   //   let nextProcess;
-  //   if (nextProcessIndex !== -1) {quantum
+  //   if (nextProcessIndex !== -1) {
   //     nextProcess = processosSJF.splice(nextProcessIndex, 1)[0];
   //   } else {
   //     nextProcess = processosSJF.shift();
