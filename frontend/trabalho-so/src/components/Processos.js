@@ -108,30 +108,43 @@ const [qtyProcessos, setQtyProcessos] = useState(0);
 const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
 const [quantum, setQuantum] = useState(0);
+const [showButtons, setShowButtons] = useState(true);
 
 // const [displayFIFO, setDisplayFIFO] = useState('none');
 
 const callFIFO = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
+  handleButtonClick()
   // setDisplayFIFO('flex');
 }
 
 const callSJF = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
+  handleButtonClick()
 }
 
 const callRR = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
+  handleButtonClick()
 }
 
 const callEDF = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
+  handleButtonClick()
 }
 
+const handleButtonClick = () => {
+  setShowButtons(false);
+};
+
+const handleBackButtonClick = () => {
+  setShowButtons(true);
+  setProcessos([]);
+};
 
 const createInputProcessos = (e) => {
     e.preventDefault();
@@ -178,12 +191,6 @@ const createInputProcessos = (e) => {
     //   };
     // return pags;  
     // }
-
-    console.log(tempoChegada)
-    console.log(tempoExecucao)
-    console.log(deadline)
-    console.log(nPaginas)
-    console.log(processos)
 
   };
 
@@ -261,6 +268,31 @@ const createInputProcessos = (e) => {
 
   const sortedData = processosSJFResult.sort((a, b) => a.indexOriginal - b.indexOriginal);
 
+  const renderButtons = () => {
+    if (showButtons) {
+      return (
+        <section className={styles.inputsProcessWrapper}>
+          <form onSubmit={callFIFO} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>FIFO</button>
+          </form>
+          <form onSubmit={callSJF} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>SJF</button>
+          </form>
+          <form onSubmit={callRR} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>Round Robin</button>
+          </form>
+          <form onSubmit={callEDF} className={styles.formForInputs}>
+            <button type='submit' className={styles.inputProcess}>EDF</button>
+          </form>
+        </section>
+      );
+    } else {
+      return (
+        <button onClick={handleBackButtonClick} className={styles.inputProcess}>Voltar</button>
+      );
+    }
+  };
+
   return (
     <div>
       <section className={styles.processQtyAndQuantumWrapper}>
@@ -309,7 +341,8 @@ const createInputProcessos = (e) => {
           {showProcessos}
         </div>
       </section>
-      <section className={styles.inputsProcessWrapper}>
+      {renderButtons()}
+      {/* <section className={styles.inputsProcessWrapper}>
         <form onSubmit={callFIFO} className={styles.formForInputs}>
           <button type='submit' className={styles.inputProcess}>FIFO</button>
         </form>
@@ -322,7 +355,7 @@ const createInputProcessos = (e) => {
         <form onSubmit={callEDF} className={styles.formForInputs}>
           <button type='submit' className={styles.inputProcess}>EDF</button>
         </form>
-      </section>
+      </section> */}
 
       {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
       <section className={styles.graphFIFOProcessWrapper}>.
