@@ -10,6 +10,9 @@ import { escalonamentoEDF } from '../data/functions/edf';
 import GanttChartFifo from './GanttChartFifo';
 import GanttChartSJF from './GrantChartSjs';
 
+import MemoryTable from '../memoryTable.js';
+import '../memoryTable.css';
+
 
 const ProcessoInput = ({ processNumber, tempoChegada, setTempoChegada, 
   tempoExecucao, setTempoExecucao, deadline, setDeadline, nPaginas, setNPaginas }) => {
@@ -290,7 +293,7 @@ const createInputProcessos = (e) => {
         <h1>Gráfico de Escalonamento SJF</h1>
         {/* <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}> */}
         <div className={styles.divChartGraphFifo}>
-          <GanttChartSJF data={processosSJF} />
+        {/* <GanttChartSJF data={processosSJF} /> */}
         </div>
         <div className={styles.divChartGraphFifoInfos}>
           <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p>

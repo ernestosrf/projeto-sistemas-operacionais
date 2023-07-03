@@ -1,0 +1,44 @@
+
+table {
+    border-collapse: collapse;
+    border-radius: 20px;
+  }
+  
+  th {
+    background-color: #ccc;
+    border-radius: 20px;
+   
+  }
+  
+  tr {
+    border-radius: 20px;
+    
+  }
+  
+  .cell-index {
+    color: black;
+    font-weight: bold;
+  }
+  
+  td {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 10px;
+    border-color: #FFD700;
+    border-width: 1px;
+    border-radius: 20px;
+    background-color: green;
+  }
+  
+  .occupied {
+    background-color: red;
+  }
+  
+  tbody {
+    border-radius: 20px;
+  }
+  
+  .not-ocuppied {
+    background-color: green;
+  }
