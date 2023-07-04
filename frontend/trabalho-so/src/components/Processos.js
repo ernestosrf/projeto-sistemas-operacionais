@@ -114,6 +114,7 @@ const [quantum, setQuantum] = useState(0);
 const [showButtons, setShowButtons] = useState(true);
 const [showFifoGraph, setShowFifoGraph] = useState(false);
 const [showSjfGraph, setShowSjfGraph] = useState(false);
+const [showRrGraph, setShowRrGraph] = useState(false);
 
 const callFIFO = (e) => {
   e.preventDefault();
@@ -133,6 +134,7 @@ const callRR = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
   handleButtonClick()
+  showSectionRR()
 }
 
 const callEDF = (e) => {
@@ -149,6 +151,7 @@ const handleBackButtonClick = () => {
   setShowButtons(true);
   hiddenSectionFIFO()
   hiddenSectionSJF()
+  hiddenSectionRR()
   setProcessos([]);
 };
 
@@ -166,6 +169,14 @@ const showSectionSJF = () => {
 
 const hiddenSectionSJF = () => {
   setShowSjfGraph(false);
+};
+
+const showSectionRR = () => {
+  setShowRrGraph(true);
+};
+
+const hiddenSectionRR = () => {
+  setShowRrGraph(false);
 };
 
 const createInputProcessos = (e) => {
@@ -339,6 +350,28 @@ const createInputProcessos = (e) => {
     }
   };
 
+  const renderRRSection = () => {
+    // let result = escalonamentoSJF(processos, qtyProcessos)
+    if (showRrGraph) {
+      return (
+      <section className={styles.graphFIFOProcessWrapper}>
+        <h1>Gráfico de Escalonamento Round Robin</h1>
+        <div className={styles.divChartGraphFifo}>
+          {/* <GanttChartSJF data={processosOrdenadosSJF} /> */}
+        </div>
+        {/* <div className={styles.divChartGraphFifoInfos}>
+          <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p>
+        </div>
+        <div className={styles.chartGraphSubtitleFifo}>
+           <p>Legenda:</p>
+           <div className={styles.subtitleForExec}></div>
+           <p>Executado</p>
+        </div> */}
+      </section>
+      );
+    }
+  };
+
   return (
     <div>
       <section className={styles.processQtyAndQuantumWrapper}>
@@ -396,37 +429,7 @@ const createInputProcessos = (e) => {
 
       {renderSJFSection()}
 
-
-
-      {/* <section className={styles.graphFIFOProcessWrapper}>.
-        <h1>Gráfico de Escalonamento SJF</h1>
-        <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
-          <GanttChartSJF data={processosSJF} />
-        </div>
-        <div className={styles.divChartGraphFifoInfos}>
-          <p>Turnaround: {escalonamentoSJF(processos, qtyProcessos).tempoExecucaoTotal}/{escalonamentoSJF(processos, qtyProcessos).qtyProcessos} = {escalonamentoSJF(processos, qtyProcessos).tempoMedioEspera}</p>
-        </div>
-        <div className={styles.chartGraphSubtitleFifo}>
-           <p>Legenda:</p>
-           <div className={styles.subtitleForExec}></div>
-           <p>Executado</p>
-        </div>
-      </section> */}
-
-      {/* <section className={styles.graphFIFOProcessWrapper}>
-        <h1>Gráfico de Escalonamento SJF</h1>
-        <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}>
-          <GanttChartSJF data={sortedData} />
-        </div>
-        <div className={styles.divChartGraphFifoInfos}>
-          <p>Turnaround: {escalonamentoSJF(processos, qtyProcessos).tempoExecucaoTotal}/{escalonamentoSJF(processos, qtyProcessos).qtyProcessos} = {escalonamentoSJF(processos, qtyProcessos).tempoMedioEspera}</p>
-        </div>
-        <div className={styles.chartGraphSubtitleFifo}>
-           <p>Legenda:</p>
-           <div className={styles.subtitleForExec}></div>
-           <p>Executado</p>
-        </div>
-      </section> */}
+      {renderRRSection()}
 
     </div>
   )
