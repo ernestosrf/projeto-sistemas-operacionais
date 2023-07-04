@@ -10,6 +10,9 @@ import { escalonamentoEDF } from '../data/functions/edf';
 import GanttChartFifo from './GanttChartFifo';
 import GanttChartSJF from './GrantChartSjs';
 
+import MemoryTable from '../memoryTable.js';
+import '../memoryTable.css';
+
 
 const ProcessoInput = ({ processNumber, tempoChegada, setTempoChegada, 
   tempoExecucao, setTempoExecucao, deadline, setDeadline, nPaginas, setNPaginas }) => {
