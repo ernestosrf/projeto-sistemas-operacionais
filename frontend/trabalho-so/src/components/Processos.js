@@ -225,10 +225,42 @@ const createInputProcessos = (e) => {
     };
   });
 
-  // const processosSJF = [...processos]; // Faz uma cópia dos processos
+  let tempoAtualSJF = 0;
+  const processosOrdenadosSJF = [];
+  const processosOrdenadosPorTempoChegada = [...processos].sort((a, b) => a.tempoChegada - b.tempoChegada);
 
-  // // Ordena os processos com base no tempo de execução crescente
-  // processosSJF.sort((a, b) => a.tempoExecucao - b.tempoExecucao);
+  while (processosOrdenadosPorTempoChegada.length > 0) {
+    // Remover todos os processos que já chegaram
+    const processosChegados = [];
+    while (processosOrdenadosPorTempoChegada.length > 0 && processosOrdenadosPorTempoChegada[0].tempoChegada <= tempoAtualSJF) {
+      processosChegados.push(processosOrdenadosPorTempoChegada.shift());
+    }
+
+    // Ordenar os processos que chegaram com base no tempo de execução
+    processosChegados.sort((a, b) => a.tempoExecucao - b.tempoExecucao);
+
+    if (processosChegados.length > 0) {
+      // Adicionar o processo com o menor tempo de execução ao array de processos ordenados
+      const processo = processosChegados.shift();
+      const inicio = Math.max(tempoAtualSJF, processo.tempoChegada);
+      const fim = inicio + processo.tempoExecucao;
+      tempoAtualSJF = fim;
+      const index = processos.findIndex((p) => p === processo) + 1;
+      processosOrdenadosSJF.push({
+        ...processo,
+        id: `P${index}`,
+        tempoChegada: inicio,
+        tempoExecucao: processo.tempoExecucao,
+        tempoTermino: fim,
+      });
+
+      // Adicionar os processos restantes de volta ao array de processos ordenados por tempo de chegada
+      processosOrdenadosPorTempoChegada.unshift(...processosChegados);
+    } else {
+      // Nenhum processo chegou ainda, avançar o tempo atual para o tempo de chegada do próximo processo
+      tempoAtualSJF = processosOrdenadosPorTempoChegada[0].tempoChegada;
+    }
+  }
 
   const renderButtons = () => {
     if (showButtons) {
@@ -288,9 +320,8 @@ const createInputProcessos = (e) => {
       return (
       <section className={styles.graphFIFOProcessWrapper}>
         <h1>Gráfico de Escalonamento SJF</h1>
-        {/* <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}> */}
         <div className={styles.divChartGraphFifo}>
-          <GanttChartSJF data={processosSJF} />
+          <GanttChartSJF data={processosOrdenadosSJF} />
         </div>
         <div className={styles.divChartGraphFifoInfos}>
           <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p>
