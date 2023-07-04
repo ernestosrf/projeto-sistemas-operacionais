@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from "./Processos.module.css";
 
 // funcoes escalonamento
@@ -105,8 +105,14 @@ const [tempoChegada, setTempoChegada] = useState([]);
 const [tempoExecucao, setTempoExecucao] = useState([]);
 const [deadline, setDeadline] = useState([]);
 const [nPaginas, setNPaginas] = useState([]);
+const [paginas, setPaginas] = useState([]);
+//Memória
+const [prevPaginas, setPrevPaginas] = useState([]);
+const [paginasRam, setPaginasRam] = useState([]);
+const [paginasNaRam, setPaginasNaRam] = useState([]);
 const [contador, setContador] = useState([]); //contador para criar páginas de cada processo 
 const [contadorAnt, setContadorAnt] = useState([]); //armazena contador anterior e cria da página seguinte até a última que do processo corrente
+//Memória
 const [qtyProcessos, setQtyProcessos] = useState(0);
 const [processos, setProcessos] = useState([]);
 const [showProcessos, setShowProcessos] = useState([]);
@@ -115,6 +121,11 @@ const [showButtons, setShowButtons] = useState(true);
 const [showFifoGraph, setShowFifoGraph] = useState(false);
 const [showSjfGraph, setShowSjfGraph] = useState(false);
 const [showRrGraph, setShowRrGraph] = useState(false);
+
+useEffect(() => {
+  // Atualiza prevPaginas quando paginas for alterado
+  setPrevPaginas(paginas);
+}, [paginas]);
 
 const callFIFO = (e) => {
   e.preventDefault();
@@ -201,6 +212,16 @@ const createInputProcessos = (e) => {
 
 }
 
+//Memória
+const geradorPaginas = (contador) => {
+  const pags = [];
+  for (let i = contadorAnt; i < contador + nPaginas; i++) {
+    pags.push(i);
+  };
+return pags;  
+}
+//Memória
+
   const handleCreateAllProcess = () => {
     for (let i = 0; i < qtyProcessos; i++) {
       const process = new fifo.Processo(
@@ -217,6 +238,7 @@ const createInputProcessos = (e) => {
       setContador(contador[i] + Number(nPaginas[i])); // Atualiza o contador com base em nPaginas
     }
 
+    //Memória
     // const geradorPaginas = (contador) => {
     //   const pags = [];
     //   for (let i = contadorAnt; i < contador; i++) {
@@ -226,6 +248,7 @@ const createInputProcessos = (e) => {
     // }
 
   };
+  //Memória
 
   let tempoAtualFIFO = 0;
   const processosFIFO = processos.map((processo) => {
@@ -349,6 +372,13 @@ const createInputProcessos = (e) => {
       );
     }
   };
+
+  //Memória
+   //const renderMemoryTable = () => {
+   // const {result, paginasRam, paginasNaRam} = escalonamentoRR(processos, quantum, paginasRam, paginasNaRam);
+    //<MemoryTable paginasRam={paginasRam} occupiedPages={paginasRam}/>
+  //}
+  //Memória
 
   const renderRRSection = () => {
     // let result = escalonamentoSJF(processos, qtyProcessos)

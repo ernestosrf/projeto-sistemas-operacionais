@@ -1,7 +1,7 @@
 import React from 'react';
 import './memoryTable.css';
 
-const tamRam = 50;
+//const tamRam = 50;
 const nColunas = 10;
 
 //Separa o vetor em subvetores, para criar a matriz e exibir n colunas em cada linha
@@ -14,8 +14,9 @@ function table(array, tamanho) {
   return arraySeparado;
 }
 
-function MemoryTable({ memory, occupiedPages, togglePage }) {
-  const tabela = table(memory, nColunas);
+function MemoryTable({occupiedPages, paginasRam }) {
+
+  const tabela = table(paginasRam, nColunas);
 
   return (
     <div className="RAM">
@@ -34,14 +35,14 @@ function MemoryTable({ memory, occupiedPages, togglePage }) {
                 {linha.map((_, posColuna) => {
                   const index = posLinha * nColunas + posColuna; {/*posição geral da célula (array normal, sem ser na matriz)*/}
                   const page = index + 1; {/*Soma 1 por que precisa começar em 1 na parte visual*/}
-                  const isOccupied = occupiedPages.includes(page); {/*Vê se a página da Ram está ocupada */}
+                  const isOccupied = occupiedPages(index) != null; {/*Vê se a página da Ram está ocupada */}
 
                   //Cria a célula de memória e se estiver ocupada, seta para vermelho sua cor
                   return (
                     <td
                       key={index} 
                       className={isOccupied ? 'occupied' : ''} 
-                       onClick={() => togglePage(index)}
+                       //onClick={() => togglePage(index)}
                     >
                       <span className="cell-index">{page}</span> 
                     </td>

@@ -1,4 +1,4 @@
-const {FIFO} = require("./troca de paginas/fifo");
+const {FIFOPaginas} = require("./troca de paginas/fifo");
 /* class processo {
     constructor(tempoChegada, tempoExecucao, deadline) {
       this.tempoChegada = tempoChegada; //tempo de execução
@@ -10,7 +10,7 @@ const {FIFO} = require("./troca de paginas/fifo");
  */
 
 
-function escalonamentoRR(processos, quantum) {
+function escalonamentoRR(processos, quantum, paginasRam, paginasNaRam) {
 
 	let turnaroundTotal = 0;
 			
@@ -24,7 +24,7 @@ function escalonamentoRR(processos, quantum) {
 		
 		//tira processo da fila
 		const p = processos.shift();
-		FIFO(p, 50); //Usa troca de páginas FIFO, caso necessário
+		const {paginasRam, paginasNaRam} = FIFOPaginas(p, 50, paginasRam, paginasNaRam); //Usa troca de páginas FIFO, caso necessário
 	
 		//caso acabe, atualiza turnaround do processo e o coloca na fila de encerrados
 		if (p.tempoExecucao <= quantum) {
@@ -39,7 +39,7 @@ function escalonamentoRR(processos, quantum) {
 			p.tempoExecucao -= quantum;
 			tempoAtual = tempoAtual + quantum + 1;
 			processos.push(p);
-			p.turnaround = tempoAtual - p.tc;
+			p.turnaround = tempoAtual - p.tempoChegada;
 		}
 	}
 
@@ -49,7 +49,7 @@ function escalonamentoRR(processos, quantum) {
 	console.log(`Turnaround total: ${turnaroundTotal} quantidade de processos: ${encerrados.length}`);
 	const turnaroundMedio = turnaroundTotal / encerrados.length;
 	
-	return turnaroundMedio;
+	return {turnaroundMedio, paginasRam, paginasNaRam};
 } //Pega o turnaround médio a partir da soma de turnarounds e do número de processos
 
 
