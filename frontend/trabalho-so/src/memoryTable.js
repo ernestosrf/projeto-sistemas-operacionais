@@ -35,7 +35,7 @@ function MemoryTable({paginasRam }) {
                   const index = posLinha * nColunas + posColuna; {/*posição geral da célula (array normal, sem ser na matriz)*/}
                   const page = index;
                   const valor = paginasRam[index].valor;
-                  const isOccupied = paginasRam[index].ocupada == null; {/*Vê se a página da Ram está ocupada */}
+                  const isOccupied = paginasRam[index].ocupada == false; {/*Vê se a página da Ram está ocupada */}
 
                   //Cria a célula de memória e se estiver ocupada, seta para vermelho sua cor
                   return (

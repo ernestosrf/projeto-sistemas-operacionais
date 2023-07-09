@@ -1,3 +1,6 @@
+import { LRU } from "./troca de paginas/lru";
+import MemoryTable from "../../memoryTable";
+
 // Implementation of the SJF algorithm
 function escalonamentoSJF(processos, qtyProcessosHelper) {
   // Sort the processes based on arrival time
@@ -10,6 +13,8 @@ function escalonamentoSJF(processos, qtyProcessosHelper) {
 
   // Loop through the processes
   while (processos.length > 0) {
+    var paginasRam = Array.from({ length: 50 }, () => ({ valor: null, contador: 0, ocupada: false}));
+    let faltas = 0;
     // Find the process with the shortest execution time that has arrived
     let shortestProcessIndex = -1;
     for (let i = 0; i < processos.length; i++) {
@@ -46,6 +51,4 @@ function escalonamentoSJF(processos, qtyProcessosHelper) {
   return {tempoExecucaoTotal, qtyProcessos, tempoMedioEspera};
 }
 
-module.exports = {
-  escalonamentoSJF
-};
+export {escalonamentoSJF};

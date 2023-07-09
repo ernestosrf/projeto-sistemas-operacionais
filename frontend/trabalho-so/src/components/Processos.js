@@ -398,9 +398,11 @@ return pags;
   };
 
   const renderSJFSection = () => {
-    let result = escalonamentoSJF(processos, qtyProcessos)
+    let result = escalonamentoSJF(processos, qtyProcessos);
+    const memoryTableComponent = result.memoryTableComponents;
     if (showSjfGraph) {
       return (
+      <>
       <section className={styles.graphFIFOProcessWrapper}>
         <h1>Gráfico de Escalonamento SJF</h1>
         <div className={styles.divChartGraphFifo}>
@@ -415,6 +417,13 @@ return pags;
            <p>Executado</p>
         </div>
       </section>
+      <div>
+      {memoryTableComponent}
+      </div>
+      <div className='disco'>
+      <Disco nPaginas={100}/>
+      </div>
+      </>
       );
     }
   };

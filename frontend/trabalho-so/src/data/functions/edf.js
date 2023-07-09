@@ -8,7 +8,6 @@ function escalonamentoEDF(
   processes.forEach((p) => {
 		p.feadtime = 0;
 	});
-
   let currentTime = 0;
   let totalTurnaroundTime = 0;
   let completedProcesses = 0;
