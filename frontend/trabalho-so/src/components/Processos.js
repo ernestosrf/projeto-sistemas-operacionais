@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from "./Processos.module.css";
 
 // funcoes escalonamento
-import fifo from '../data/functions/fifo'
+import {Processo, escalonamentoFIFO} from '../data/functions/fifo.js';
 import { escalonamentoSJF } from '../data/functions/sjf';
 import { escalonamentoRR } from "../data/functions/rr";
 import { escalonamentoEDF } from '../data/functions/edf';
@@ -14,6 +14,9 @@ import GanttChartEDF from './GanttChartEdf';
 
 import MemoryTable from '../memoryTable.js';
 import '../memoryTable.css';
+import Disco from './Disco';
+import './Disco.css';
+
 
 
 const ProcessoInput = ({ processNumber, tempoChegada, setTempoChegada, 
@@ -236,12 +239,15 @@ return pags;
 //Memória
 
   const handleCreateAllProcess = () => {
+    var j = 1;
     for (let i = 0; i < qtyProcessos; i++) {
-      const process = new fifo.Processo(
+      let k = Number(nPaginas[i]);
+      const paginas = Array.from({ length: k }, (_, index) => j - 1 + index);
+      const process = new Processo(
         Number(tempoChegada[i]),
         Number(tempoExecucao[i]),
         Number(deadline[i]),
-        Number(nPaginas[i]),
+        paginas
         // geradorPaginas(contador[i])
       );
       console.log(process)
@@ -249,8 +255,7 @@ return pags;
 
       setContadorAnt(contador[i]);
       setContador(contador[i] + Number(nPaginas[i])); // Atualiza o contador com base em nPaginas
-    }
-
+      j += k;}
     //Memória
     // const geradorPaginas = (contador) => {
     //   const pags = [];
@@ -361,11 +366,14 @@ return pags;
   };
 
   const renderFIFOSection = () => {
-    let result = fifo.escalonamentoFIFO(processos)
+    let result = escalonamentoFIFO(processos);
+    const memoryTableComponent = result.memoryTableComponents;
     if (showFifoGraph) {
       return (
+        <>
         <section className={styles.graphFIFOProcessWrapper}>.
           <h1>Gráfico de Escalonamento FIFO</h1>
+          {/* <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}> */}
           <div className={styles.divChartGraphFifo}>
             <GanttChartFifo data={processosFIFO} />
           </div>
@@ -378,6 +386,13 @@ return pags;
             <p>Executado</p>
           </div>
         </section>
+        <div>
+        {memoryTableComponent}
+        </div>
+        <div className='disco'>
+        <Disco nPaginas={100}/>
+        </div>
+        </>
       );
     }
   };

@@ -1,42 +1,66 @@
 
-table {
-    border-collapse: collapse;
-    border-radius: 20px;
-  }
+table, th, td {
+  border: 2px solid #FFD700;
+}
   
   th {
     background-color: #ccc;
-    border-radius: 20px;
+    border-color: #FFD700;
+    border-width: 2px;  
+
    
   }
   
   tr {
-    border-radius: 20px;
-    
+ 
+    border-color: #FFD700;
+    border-width: 2px;  
+
   }
   
-  .cell-index {
+  .cell-index-page {
+    color: rgb(243, 236, 236);
+    position: absolute;
+    font-weight: bold;
+    top: 0;
+    left: 0;
+    font-size: 12px;
+  }
+
+  .cell-index-valor {
     color: black;
     font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px; 
   }
   
   td {
+    position: relative;
     width: 40px;
     height: 40px;
     cursor: pointer;
     padding: 10px;
-    border-color: #FFD700;
-    border-width: 1px;
-    border-radius: 20px;
     background-color: green;
+    border-color: #FFD700;
+    border-width: 2px;  
+
   }
   
   .occupied {
     background-color: red;
   }
   
+  .not-occupied {
+    background-color: green;
+  }
+
   tbody {
-    border-radius: 20px;
+    border-color: #FFD700;
+    border-width: 2px;  
+
   }
   
   .not-ocuppied {
