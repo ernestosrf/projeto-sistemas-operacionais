@@ -314,4 +314,18 @@
     height: 30px;
     border-radius: 6px;
     background-color: #0000FF;
-} 
+}
+
+.subtitleOverload {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #FF0000;
+}
+
+.subtitleDeadline {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #4b4b4b;
+}

@@ -8,7 +8,9 @@ import { escalonamentoRR } from "../data/functions/rr";
 import { escalonamentoEDF } from '../data/functions/edf';
 
 import GanttChartFifo from './GanttChartFifo';
-import GanttChartSJF from './GrantChartSjs';
+import GanttChartSJF from './GanttChartSjs';
+import GanttChartRR from './GanttChartRr';
+import GanttChartEDF from './GanttChartEdf';
 
 import MemoryTable from '../memoryTable.js';
 import '../memoryTable.css';
@@ -121,6 +123,7 @@ const [showButtons, setShowButtons] = useState(true);
 const [showFifoGraph, setShowFifoGraph] = useState(false);
 const [showSjfGraph, setShowSjfGraph] = useState(false);
 const [showRrGraph, setShowRrGraph] = useState(false);
+const [showEdfGraph, setShowEdfGraph] = useState(false);
 
 useEffect(() => {
   // Atualiza prevPaginas quando paginas for alterado
@@ -152,6 +155,7 @@ const callEDF = (e) => {
   e.preventDefault();
   handleCreateAllProcess()
   handleButtonClick()
+  showSectionEDF()
 }
 
 const handleButtonClick = () => {
@@ -163,6 +167,7 @@ const handleBackButtonClick = () => {
   hiddenSectionFIFO()
   hiddenSectionSJF()
   hiddenSectionRR()
+  hiddenSectionEDF()
   setProcessos([]);
 };
 
@@ -188,6 +193,14 @@ const showSectionRR = () => {
 
 const hiddenSectionRR = () => {
   setShowRrGraph(false);
+};
+
+const showSectionEDF = () => {
+  setShowEdfGraph(true);
+};
+
+const hiddenSectionEDF = () => {
+  setShowEdfGraph(false);
 };
 
 const createInputProcessos = (e) => {
@@ -250,6 +263,8 @@ return pags;
   };
   //Memória
 
+  // FIFO
+
   let tempoAtualFIFO = 0;
   const processosFIFO = processos.map((processo) => {
     const inicio = Math.max(tempoAtualFIFO, processo.tempoChegada);
@@ -261,6 +276,8 @@ return pags;
       tempoExecucao: fim,
     };
   });
+
+  // SJF
 
   let tempoAtualSJF = 0;
   const processosOrdenadosSJF = [];
@@ -299,6 +316,21 @@ return pags;
     }
   }
 
+  // RR
+
+  const processosRR = processos.map((processo) => ({
+    tempoChegada: parseInt(processo.tempoChegada),
+    tempoExecucao: parseInt(processo.tempoExecucao),
+  }));
+    
+  // EDF
+
+  const processosEDF = processos.map((processo) => ({
+    tempoChegada: parseInt(processo.tempoChegada),
+    tempoExecucao: parseInt(processo.tempoExecucao),
+    deadline: parseInt(processo.deadline), 
+  }));
+
   const renderButtons = () => {
     if (showButtons) {
       return (
@@ -334,7 +366,6 @@ return pags;
       return (
         <section className={styles.graphFIFOProcessWrapper}>.
           <h1>Gráfico de Escalonamento FIFO</h1>
-          {/* <div className={styles.divChartGraphFifo} style={{ height: `calc((50px * ${qtyProcessos}) + 30px)` }}> */}
           <div className={styles.divChartGraphFifo}>
             <GanttChartFifo data={processosFIFO} />
           </div>
@@ -387,16 +418,46 @@ return pags;
       <section className={styles.graphFIFOProcessWrapper}>
         <h1>Gráfico de Escalonamento Round Robin</h1>
         <div className={styles.divChartGraphFifo}>
-          {/* <GanttChartSJF data={processosOrdenadosSJF} /> */}
+          <GanttChartRR data={processosRR} />;
         </div>
-        {/* <div className={styles.divChartGraphFifoInfos}>
-          <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p>
+        <div className={styles.divChartGraphFifoInfos}>
+          {/* <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p> */}
+          <p>Turnaround: 51/4 = 12.75</p>
         </div>
         <div className={styles.chartGraphSubtitleFifo}>
            <p>Legenda:</p>
            <div className={styles.subtitleForExec}></div>
            <p>Executado</p>
-        </div> */}
+           <div className={styles.subtitleOverload}></div>
+           <p>Sobrecarga</p>
+        </div>
+      </section>
+      );
+    }
+  };
+
+  const renderEDFSection = () => {
+    // let result = escalonamentoSJF(processos, qtyProcessos)
+    if (showEdfGraph) {
+      return (
+      <section className={styles.graphFIFOProcessWrapper}>
+        <h1>Gráfico de Escalonamento EDF</h1>
+        <div className={styles.divChartGraphFifo}>
+          <GanttChartEDF data={processosEDF} />;
+        </div>
+        <div className={styles.divChartGraphFifoInfos}>
+          {/* <p>Turnaround: {result.tempoExecucaoTotal}/{result.qtyProcessos} = {result.tempoMedioEspera}</p> */}
+          <p>Turnaround: 38/4 = 9.50</p>
+        </div>
+        <div className={styles.chartGraphSubtitleFifo}>
+           <p>Legenda:</p>
+           <div className={styles.subtitleForExec}></div>
+           <p>Executado</p>
+           <div className={styles.subtitleOverload}></div>
+           <p>Sobrecarga</p>
+           <div className={styles.subtitleDeadline}></div>
+           <p>Ultrapassou o Deadline</p>
+        </div>
       </section>
       );
     }
@@ -451,16 +512,10 @@ return pags;
         </div>
       </section>
       {renderButtons()}
-
-
-      {/* <section className={styles.graphProcessWrapper} style={{ display: displayFIFO }}> */}
-     
       {renderFIFOSection()}
-
       {renderSJFSection()}
-
       {renderRRSection()}
-
+      {renderEDFSection()}
     </div>
   )
 }
